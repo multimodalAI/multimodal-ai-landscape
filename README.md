@@ -5,7 +5,7 @@ This repository analyses arXiv preprints from 2019 to 2024 to reveal emerging tr
 
 ### 1. Identifying Multimodal AI and Specific Modalities
 
-We first identified relevant AI preprints by searching titles and abstracts for common AI terms, further refining the search with the multimodal terms. We then categorised these preprints by performing targeted queries for specific modalities. The search terms and queries used are detailed in the table below.
+We first identified relevant AI preprints by searching titles and abstracts for common AI terms, further refining the search with the multimodal terms. We then categorised these preprints by performing targeted queries for specific modalities. The search terms and queries used are detailed in the query table below.
 
 ### 2. Query Table
 | **Terms**            | **Queries**                                                                                      |
@@ -26,15 +26,15 @@ We first identified relevant AI preprints by searching titles and abstracts for 
 ## Data Files
 
 The `data` folder contains the following files:
-- `overall-preprint-counts.csv`:  Total counts of multimodal AI preprints from 2019 to 2024.
+- [`overall-preprint-counts.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/overall-preprint-counts.csv): Total counts of multimodal AI preprints from 2019 to 2024.
 
-- `preprint-counts-by-combined-modality-number.csv`: Counts of preprints categorised by the number of modalities combined from 2019 to 2024.
+- [`preprint-counts-by-combined-modality-number.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/preprint-counts-by-combined-modality-number.csv): Counts of preprints for different numbers of modalities combined from 2019 to 2024.
 
-- `preprint-counts-by-modality.csv`: Counts of preprints for individual modalities from 2019 to 2024.
+- [`preprint-counts-by-modality.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/preprint-counts-by-modality.csv): Counts of individual modalities from 2019 to 2024.
 
-- `modality-combination-breakdown.csv`: Counts of pairwise, triple, and quadruple modality combinations from 2019 to 2024.
+- [`modality-combination-breakdown.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/modality-combination-breakdown.csv): Counts of pairwise, triple, and quadruple modality combinations from 2019 to 2024.
 
-- `modality-pairs-2024.csv`: Counts of preprints for modality pairs published in 2024.
+- [`modality-pairs-2024.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/modality-pairs-2024.csv): Counts of different modality pairs published in 2024.
 
-- `other-modality-combinations-by-year.csv`: Yearly counts for preprints using less common modality combinations from 2019 to 2024.
+- [`other-modality-combinations-by-year.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/other-modality-combinations-by-year.csv): Yearly counts for preprints using less common modality combinations from 2019 to 2024.
 
