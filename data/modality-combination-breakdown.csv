@@ -1,0 +1,19 @@
+Year,Type,Vision and Language,Vision and Others,Language and Others,Others
+2019,Pairwise,14,15,4,10
+2020,Pairwise,14,33,3,11
+2021,Pairwise,26,44,21,15
+2022,Pairwise,33,42,13,19
+2023,Pairwise,98,68,30,33
+2024,Pairwise,320,125,113,70
+2019,Triple,8,9,1,2
+2020,Triple,19,15,1,2
+2021,Triple,24,23,4,5
+2022,Triple,39,22,4,5
+2023,Triple,71,26,7,4
+2024,Triple,183,43,19,7
+2019,Quadruple,4,1,1,0
+2020,Quadruple,5,2,1,0
+2021,Quadruple,9,2,0,1
+2022,Quadruple,6,3,2,2
+2023,Quadruple,14,7,2,0
+2024,Quadruple,50,9,4,1
