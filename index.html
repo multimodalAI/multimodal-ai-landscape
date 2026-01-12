@@ -12,7 +12,13 @@
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <style>
-  :root { --gap: 14px; }
+  :root {
+    --gap: 14px;
+    --header-bg: #f7f7f7;   /* light, portal-like */
+    --header-border: #e6e6e6;
+    --header-text: #1f2937;
+    --header-subtext: #555;
+  }
   * { box-sizing: border-box; }
   body {
     font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
@@ -33,6 +39,9 @@
     border-radius: 12px;
     padding: 12px;
     background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .card h2 {
     margin: 6px 8px 10px;
@@ -53,16 +62,6 @@
   }
   .row.right { margin-left: 8px; justify-content: flex-end; gap: 8px; }
   .label-right { margin-left: auto; }
-  .card {
-    border: 1px solid #e6e6e6;
-    border-radius: 12px;
-    padding: 12px;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
   .chart {
     width: 100%;
     flex-grow: 1;
@@ -129,21 +128,25 @@
   footer.footer.collapsed .footer-header span {
     transform: rotate(-90deg);
   }
-  /* === Fix for chart ⑤ chips spacing === */
+  /* === Fix for chart 5 chips spacing === */
   #pairChips {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;        /* horizontal+vertical spacing between chips */
     align-items: center;
   }
-  /* --- Portal-style page header --- */
-  :root{
-    --header-bg: #f7f7f7;   /* light, portal-like */
-    --header-border: #e6e6e6;
-    --header-text: #1f2937;
-    --header-subtext: #555;
+  #pairYearChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
   }
-
+  #pairYearChips .year-label {
+    font-size: 13px;
+    color: #555;
+    margin-right: 4px;
+  }
+  /* --- Portal-style page header --- */
   .page-header{
     background: var(--header-bg);
     border: 1px solid var(--header-border);
@@ -189,18 +192,21 @@
       This page presents data visualisations for the Nature Machine Intelligence Perspective paper
       <a href="https://www.nature.com/articles/s42256-025-01116-5" target="_blank" rel="noopener">
         <em>Towards deployment-centric multimodal AI beyond vision and language</em></a>.
-      Preprint available at
+      A preprint version is available at
       <a href="https://arxiv.org/abs/2504.03603" target="_blank" rel="noopener"><em>arXiv:2504.03603</em></a>.
     </p>
+
     <p class="muted">
-      The analysis covers arXiv preprints from 2019 to 2024 and highlights emerging research trends in multimodal AI.
-      The source data are derived from the
+      The analysis covers arXiv preprints from 2019 to 2025 and highlights emerging research trends in multimodal AI, using
+      data derived from the
       <a href="https://www.kaggle.com/datasets/Cornell-University/arxiv" target="_blank" rel="noopener">
         <em>Kaggle arXiv Dataset</em></a>.
-      This analysis will be updated annually.
+      It is updated annually, with the latest update in January 2026 based on a metadata snapshot downloaded on 11 January 2026.
     </p>
+    
     <p class="muted">
-      The counts are approximate and should be interpreted as indicators of overall trends rather than exact totals.
+      As arXiv metadata are subject to retrospective updates, counts may vary slightly between dataset snapshots.
+      The reported numbers should be interpreted as indicators of overall trends rather than exact totals.
     </p>
   </header>
 
@@ -209,35 +215,36 @@
 <div class="grid">
   <!-- 1 -->
   <div class="card">
-    <h2>① Yearly growth of multimodal AI preprints</h2>
+    <h2>Fig. 1 | Yearly growth of multimodal AI preprints</h2>
     <div id="chart1" class="chart"></div>
   </div>
 
   <!-- 2 -->
   <div class="card">
-    <h2>② Yearly growth of multimodal AI preprints by modality</h2>
+    <h2>Fig. 2 | Multimodal AI preprints by modality</h2>
     <div class="row" id="modChips"></div>
     <div id="chart2" class="chart"></div>
   </div>
 
   <!-- 3 -->
   <div class="card">
-    <h2>③ Multimodal AI preprints by the number of combined modalities</h2>
+    <h2>Fig. 3 | Multimodal AI preprints by the number of combined modalities</h2>
     <div class="row" id="numChips"></div>
     <div id="chart3" class="chart"></div>
   </div>
 
   <!-- 4 -->
   <div class="card">
-    <h2>④ Breakdown of pairwise, triple, and quadruple modality combinations</h2>
+    <h2>Fig. 4 | Breakdown of pairwise, triple, quadruple, and quintuple modality combinations</h2>
     <div class="row" id="typeChips"></div>
     <div id="chart4" class="chart"></div>
   </div>
 
   <!-- 5 -->
   <div class="card">
-    <h2>⑤ Modality pairs in multimodal AI preprints in 2024</h2>
+    <h2>Fig. 5 | Modality pairs</h2>
     <div class="row">
+      <div id="pairYearChips"></div>
       <div id="pairChips"></div>
       <label class="label-right">Top&nbsp;
         <select id="pairTopN">
@@ -253,7 +260,7 @@
 
   <!-- 6 -->
   <div class="card">
-    <h2>⑥ Underexplored modality combinations</h2>
+    <h2>Fig. 6 | Underexplored modality combinations</h2>
     <div class="row" id="comboChips"></div>
     <div id="chart6" class="chart"></div>
   </div>
@@ -261,48 +268,51 @@
 
 <script>
 /* =========================================================
-   Utils (pure refactor; no behavior change)
+   Utilities and helpers
 ========================================================= */
 
-// Color palette and mapping (unchanged)
+
+// Color palette and mapping
 const colorMap = {
-  "Vision": "#377eb8",       // blue
-  "Language": "#984ea3",     // purple
-  "Time series": "#4daf4a",  // green (teal-green)
-  "Audio": "#ff7f00",        // orange
-  "Sensor": "#a65628",       // brown
-  "Spatial": "#999999",      // grey
-  "Graph": "#e41a1c",        // red
-  "Tabular": "#dede00",      // yellow
+  "Vision": "#5496CE",       // blue
+  "Language": "#5EB342",     // green
+  "TimeSeries": "#E9C54E",  //  yellow
+  "Graph": "#F29742",        // orange
+  "Sensor": "#B778B3",       // purple
+  "Spatial": "#96A0B3",      // grey
+  "Audio": "#DC6464",        // red
+  "Tabular": "#C5C500",      // olive
 
-  "Vision and Language": "#377eb8",
-  "Vision and Others": "#4daf4a",
-  "Language and Others": "#984ea3",
-  "Others": "#ff7f00",
+  "Vision and Language": "#5496CE", // blue
+  "Vision and Others": "#5EB342", // green
+  "Language and Others": "#E9C54E", // yellow
+  "Others": "#F29742", // orange
 
-  "Pairwise": "#377eb8",
-  "Triple": "#4daf4a",
-  "Quadruple": "#984ea3",
-  "Quintuple": "#ff7f00",
+  "Pairwise": "#5496CE",
+  "Triple": "#5EB342",
+  "Quadruple": "#E9C54E",
+  "Quintuple": "#F29742",
 
-  "AI": "#377eb8",
-  "Multimodal AI": "#e41a1c"
+  "AI": "#DC6464",
+  "Multimodal AI": "#5496CE"
 };
 
-// Extended categorical palette (Nature-inspired, color-blind safe)
+// Extended categorical palette
 const colors = [
-  "#377eb8", // blue
-  "#4daf4a", // green
-  "#984ea3", // purple
-  "#ff7f00", // orange
-  "#a65628", // brown
-  "#999999", // grey
-  "#e41a1c", // red
-  "#dede00"  // yellow
+  "#5496CE", // blue
+  "#5EB342", // green
+  "#E9C54E", // yellow
+  "#F29742", // orange
+  "#B778B3", // brown
+  "#96A0B3", // grey
+  "#DC6464", // red
+  "#C5C500", // olive
+  "#E0DCCA", // tone
+  "#96CED3", // teal
+  "#D3A9CE", // purple
 ];
 
-// Basic helpers (same semantics as before)
-function onlyY(label = "") { return (label ? `%{y} ${label}` : "%{y}") + "<extra></extra>"; }
+// Basic helpers
 function centerLegend() { return { orientation: "h", x: 0.5, xanchor: "center", y: 1.05, yanchor: "bottom" }; }
 function num(x) {
   const n = Number(String(x).match(/-?\d+(\.\d+)?/)?.[0]);
@@ -313,7 +323,7 @@ function safeMax(arr) {
   return vals.length ? Math.max(...vals) : 0;
 }
 
-// CSV loader (same behavior as your original)
+// CSV loader (headered data)
 function csv(url) {
   return new Promise((resolve, reject) =>
     Papa.parse(url, {
@@ -325,8 +335,10 @@ function csv(url) {
 
 // Chip factory to reduce duplicated code (keeps original behavior/appearance)
 function makeChipGroup(container, labels, { multi = true, defaultOn = [] } = {}) {
-  container.innerHTML = labels.map(l => `<button class="chip" data-val="${l}">${l}</button>`).join('');
-  const selected = new Set(defaultOn.length ? defaultOn : (multi ? labels : [labels[0]]));
+  const entries = labels.map(l => (typeof l === 'string' ? { value: l, label: l } : l));
+  container.innerHTML = entries.map(l => `<button class="chip" data-val="${l.value}">${l.label}</button>`).join('');
+  const defaultVals = entries.map(l => l.value);
+  const selected = new Set(defaultOn.length ? defaultOn : (multi ? defaultVals : [defaultVals[0]]));
 
   function sync() {
     [...container.querySelectorAll('.chip')].forEach(btn => {
@@ -356,13 +368,17 @@ function makeChipGroup(container, labels, { multi = true, defaultOn = [] } = {})
 
 // Pretty number for annotations
 function fmt(n) { return (n ?? 0).toLocaleString(); }
+// Normalize modality labels for display without changing data keys.
+function displayModalityLabel(label) {
+  return String(label).replace(/\bTimeSeries\b/g, 'Time series');
+}
 
 /* =========================================================
    Main: load data and render charts
 ========================================================= */
 (async function main() {
 
-  /* ========== ① Overall preprint counts (bar + secondary y line) ========== */
+  /* ========== 1. Overall preprint counts (bar + secondary y line) ========== */
   async function renderChart1() {
     const overall = await csv('./data/overall-preprint-counts.csv'); // columns: Year, AI, Multimodal AI
     const years = overall.map(r => num(r.Year)).filter(v => v != null);
@@ -372,15 +388,15 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
 
     const barTrace = {
       x: years, y: mmai, name: 'Multimodal AI preprints', type: 'bar',
-      marker: { color: '#4C72B0', line: { color: '#4C72B0', width: 1 } }, width: 0.6,
+      marker: { color: colorMap['Multimodal AI'], line: { color: colorMap['Multimodal AI'], width: 1 } }, width: 0.6,
       hovertemplate: "%{y}<extra></extra>", opacity: 0.85
     };
     const lineTrace = {
       x: years, y: pct, name: 'Multimodal AI as a share of AI (%)',
       type: 'scatter', mode: 'lines+markers',
       yaxis: 'y2',
-      line: { width: 3, color: '#984ea3', dash: 'dash' },
-      marker: { size: 8, color: '#984ea3', symbol: 'diamond' },
+      line: { width: 3, color: colorMap['AI'], dash: 'dash' },
+      marker: { size: 8, color: colorMap['AI'], symbol: 'diamond' },
       hovertemplate: "%{y:.1%}<extra></extra>"
     };
 
@@ -398,14 +414,15 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
     }, { responsive: true });
   }
 
-  /* ========== ② By modality (multi-select chips) ========== */
+  /* ========== 2. By modality (multi-select chips) ========== */
   async function renderChart2() {
     const byMod = await csv('./data/preprint-counts-by-modality.csv');
     const years = byMod.map(r => num(r.Year));
     const modCols = Object.keys(byMod[0]).filter(k => k.toLowerCase() !== 'year');
+    const modItems = modCols.map(k => ({ value: k, label: displayModalityLabel(k) }));
 
     const wrap = document.getElementById('modChips');
-    const chips = makeChipGroup(wrap, modCols, { multi: true, defaultOn: modCols });
+    const chips = makeChipGroup(wrap, modItems, { multi: true, defaultOn: modCols });
 
     // add Clear button (same visual as chart 6)
     const clear2 = document.createElement('button');
@@ -420,12 +437,12 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
     clear2.addEventListener('click', () => {
       chips.selected.clear();
       chips.sync();
-      draw([]); // show the “select modalities” placeholder
+      draw([]); // show the select-modalities placeholder
     });
 
     function draw(cols) {
       const traces = cols.map((k, i) => ({
-        x: years, y: byMod.map(r => num(r[k])), name: k, type: 'bar',
+        x: years, y: byMod.map(r => num(r[k])), name: displayModalityLabel(k), type: 'bar',
         marker: { color: colorMap[k] || colors[i % colors.length], opacity: 0.85 },
         hovertemplate: "%{y}<extra></extra>"
       }));
@@ -455,7 +472,7 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
     wrap.addEventListener('chips-change', (e) => draw([...e.detail.selected]));
   }
 
-  /* ========== ③ By number of combined modalities (chips) ========== */
+  /* ========== 3. By number of combined modalities (chips) ========== */
   async function renderChart3() {
     const byNum = await csv('./data/preprint-counts-by-combined-modality-number.csv');
     const years = byNum.map(r => num(r.Year));
@@ -496,95 +513,120 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
     wrap.addEventListener('chips-change', (e) => draw([...e.detail.selected]));
   }
 
-  /* ========== ④ Breakdown (Type single-select chips) ========== */
+  /* ========== 4. Breakdown (Type single-select chips) ========== */
   async function renderChart4() {
     const breakdown = await csv('./data/modality-combination-breakdown.csv');
-    const types = [...new Set(breakdown.map(r => String(r.Type || '').trim()))].filter(Boolean);
+    const typeKey = Object.keys(breakdown[0] || {}).find(k => k.toLowerCase() === 'type') || 'Type';
+    const types = [...new Set(breakdown.map(r => String(r[typeKey] || '').trim()))].filter(Boolean);
+    const typeItems = types.map(t => ({ value: t, label: t ? t[0].toUpperCase() + t.slice(1) : t }));
 
     const wrap = document.getElementById('typeChips');
-    const chips = makeChipGroup(wrap, types, { multi: false, defaultOn: [types[0]] });
+    const chips = makeChipGroup(wrap, typeItems, { multi: false, defaultOn: [types[0]] });
 
-  function draw(typeSel) {
-    const filtered = breakdown.filter(r => String(r.Type || '').trim() === typeSel);
-    if (!filtered.length) { Plotly.purge('chart4'); return; }
+    function draw(typeSel) {
+      const filtered = breakdown.filter(r => String(r[typeKey] || '').trim() === typeSel);
+      if (!filtered.length) { Plotly.purge('chart4'); return; }
 
-    const years = filtered.map(r => num(r.Year));
+      const years = filtered.map(r => num(r.Year));
+      const cats = ["Vision and Language", "Vision and Others", "Language and Others", "Others"]
+        .filter(k => k in filtered[0]);
 
-    const cats = ["Vision and Language", "Vision and Others", "Language and Others", "Others"]
-      .filter(k => k in filtered[0]);
+      function displayLabel(csvKey, typeSel) {
+        const type = String(typeSel).toLowerCase();
+        const isPair = type === 'pairwise';
+        const isTriple = type === 'triple';
+        const isQuad = type === 'quadruple';
 
-  function displayLabel(csvKey, typeSel) {
-    const type = String(typeSel).toLowerCase();
-    const isPair = type === 'pairwise';
-    const isTriple = type === 'triple';
-    const isQuad = type === 'quadruple';
+        switch (csvKey) {
+          case "Vision and Language":
+            if (isPair) return "Vision & Language";
+            if (isTriple) return "Vision & Language & Other";
+            if (isQuad) return "Vision & Language & Others";
+            return "Vision & Language";
 
-    switch (csvKey) {
-      case "Vision and Language":
-        if (isPair) return "Vision & Language";
-        if (isTriple) return "Vision & Language & Other";
-        if (isQuad) return "Vision & Language & Others";
-        return "Vision & Language";
+          case "Vision and Others":
+            return isPair ? "Vision & Other" : "Vision & Others";
 
-      case "Vision and Others":
-        return isPair ? "Vision & Other" : "Vision & Others";
+          case "Language and Others":
+            return isPair ? "Language & Other" : "Language & Others";
 
-      case "Language and Others":
-        return isPair ? "Language & Other" : "Language & Others";
+          default:
+            return csvKey;
+        }
+      }
 
-      default:
-        return csvKey;
+      const traces = cats.map((k, i) => ({
+        x: years,
+        y: filtered.map(r => num(r[k])),
+        name: displayLabel(k, typeSel),
+        type: 'bar',
+        marker: { color: colorMap[k] || colors[i % colors.length] },
+        hovertemplate: "%{y}<extra></extra>"
+      }));
+
+      Plotly.newPlot('chart4', traces, {
+        barmode: 'group',
+        xaxis: { title: 'Year', dtick: 1 },
+        yaxis: { title: 'Count' },
+        legend: centerLegend()
+      }, { responsive: true });
     }
-  }
-
-  const traces = cats.map((k, i) => ({
-    x: years,
-    y: filtered.map(r => num(r[k])),
-    name: displayLabel(k, typeSel),
-    type: 'bar',
-    marker: { color: colorMap[k] || colors[i % colors.length] },
-    hovertemplate: "%{y}<extra></extra>"
-  }));
-
-  Plotly.newPlot('chart4', traces, {
-    barmode: 'group',
-    xaxis: { title: 'Year', dtick: 1 },
-    yaxis: { title: 'Count' },
-    legend: centerLegend()
-  }, { responsive: true });
-}
     draw([...chips.selected][0]);
     wrap.addEventListener('chips-change', (e) => draw([...e.detail.selected][0]));
   }
 
-  /* ========== ⑤ Modality pairs 2024 (multi-select chips + TopN) ========== */
+  /* ========== 5. Modality pairs (multi-select chips + TopN) ========== */
   async function renderChart5() {
-    // Load as raw (header: false)
-    const pairsRaw = await new Promise((resolve, reject) =>
-      Papa.parse('./data/modality-pairs-2024.csv', {
-        download: true, header: false, skipEmptyLines: true,
-        complete: r => resolve(r.data), error: reject
-      })
-    );
-    const pairLabels = pairsRaw[0].map(s => String(s).trim());
-    const pairCounts = pairsRaw[1].map(v => num(v));
-
+    const yearOptions = [2024, 2025]; // add new years here in ascending order
+    let currentYear = yearOptions[yearOptions.length - 1];
     function splitModalities(label) {
       return label.split('&').map(s => s.trim()).filter(Boolean);
     }
-    const pairRows = pairLabels.map((lab, i) => ({
-      label: lab, count: pairCounts[i], mods: splitModalities(lab)
-    }));
 
-    const knownOrder = ["Vision","Language","Audio","Time series","Sensor","Spatial","Graph","Tabular"];
-    const allModsSet = new Set(pairRows.flatMap(r => r.mods));
-    const allMods = knownOrder.filter(m => allModsSet.has(m))
-      .concat([...allModsSet].filter(m => !knownOrder.includes(m)));
+    let pairRows = [];
+    let allMods = [];
+
+    // Load as raw (header: false)
+    async function loadPairs(year) {
+      const pairsRaw = await new Promise((resolve, reject) =>
+        Papa.parse(`./data/modality-pairs-${year}.csv`, {
+          download: true, header: false, skipEmptyLines: true,
+          complete: r => resolve(r.data), error: reject
+        })
+      );
+      let pairLabels = (pairsRaw[0] || []).map(s => String(s).trim());
+      let pairCounts = (pairsRaw[1] || []).map(v => num(v));
+
+      // Drop the Year column if present (not a modality pair label).
+      if (pairLabels[0] && pairLabels[0].toLowerCase() === 'year') {
+        pairLabels = pairLabels.slice(1);
+        pairCounts = pairCounts.slice(1);
+      }
+
+      pairRows = pairLabels.map((lab, i) => ({
+        label: lab, count: pairCounts[i], mods: splitModalities(lab)
+      }));
+
+      const knownOrder = ["Vision","Language","Audio","TimeSeries","Sensor","Spatial","Graph","Tabular"];
+      const allModsSet = new Set(pairRows.flatMap(r => r.mods));
+      allMods = knownOrder.filter(m => allModsSet.has(m))
+        .concat([...allModsSet].filter(m => !knownOrder.includes(m)));
+    }
 
     // Chips
     const chipWrap = document.getElementById('pairChips');
-    chipWrap.innerHTML = allMods.map(m => `<button class="chip" data-mod="${m}">${m}</button>`).join('');
     const selectedMods = new Set();
+
+    // Year chips
+    const yearWrap = document.getElementById('pairYearChips');
+    yearWrap.innerHTML = `<span class="year-label">Year</span>` +
+      yearOptions.map(y => `<button class="chip" data-year="${y}">${y}</button>`).join('');
+
+    function syncYearChips() {
+      [...yearWrap.querySelectorAll('button[data-year]')].forEach(btn => {
+        btn.classList.toggle('active', Number(btn.dataset.year) === currentYear);
+      });
+    }
 
     // row container that holds chips + TopN
     const row5 = chipWrap.parentElement;
@@ -608,6 +650,12 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
       draw();
     });
 
+    function renderPairChips() {
+      chipWrap.innerHTML = allMods
+        .map(m => `<button class="chip" data-mod="${m}">${displayModalityLabel(m)}</button>`)
+        .join('');
+    }
+
     function syncPairChips() {
       [...chipWrap.querySelectorAll('.chip')].forEach(btn => {
         btn.classList.toggle('active', selectedMods.has(btn.dataset.mod));
@@ -630,7 +678,7 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
       const N = getTopNValue();
       if (filtered.length > N) filtered = filtered.slice(0, N);
 
-      const labels = filtered.map(r => r.label);
+      const labels = filtered.map(r => displayModalityLabel(r.label));
       const values = filtered.map(r => r.count);
 
       const baseColor = colors[0];
@@ -641,7 +689,10 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
       function formatLabel(lab) {
         if (selectedMods.size === 0) return lab;
         let out = lab;
-        for (const m of selectedMods) out = out.replaceAll(m, `<b>${m}</b>`);
+        for (const m of selectedMods) {
+          const disp = displayModalityLabel(m);
+          out = out.replaceAll(disp, `<b>${disp}</b>`);
+        }
         return out;
       }
 
@@ -663,12 +714,15 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
         yaxis: { showticklabels: false, autorange: 'reversed' },
         annotations: annos,
         margin: { l: 200, r: 40, t: 40, b: 60 },
-        legend: centerLegend()
+        showlegend: false
       }, { responsive: true });
     }
 
     // Bindings
+    await loadPairs(currentYear);
+    renderPairChips();
     syncPairChips();
+    syncYearChips();
     draw();
 
     chipWrap.addEventListener('click', (e) => {
@@ -679,9 +733,22 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
       draw();
     });
     selTopN.addEventListener('change', draw);
+
+    yearWrap.addEventListener('click', async (e) => {
+      const btn = e.target.closest('button[data-year]'); if (!btn) return;
+      const year = Number(btn.dataset.year);
+      if (year === currentYear) return;
+      currentYear = year;
+      selectedMods.clear();
+      syncYearChips();
+      await loadPairs(currentYear);
+      renderPairChips();
+      syncPairChips();
+      draw();
+    });
   }
 
-  /* ========== ⑥ Other combinations by year (multi-select chips, show more, clear) ========== */
+  /* ========== 6. Underexplored combinations by year (multi-select chips, show more, clear) ========== */
   async function renderChart6() {
     const other = await csv('./data/other-modality-combinations-by-year.csv');
     const years = other.map(r => num(r.Year));
@@ -706,11 +773,7 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
     const comboWrap = document.getElementById('comboChips');
     const maxVisible = 10;
     let showAll = false;
-    const distinctColors = [
-      "#4C72B0","#55A868","#C44E52","#8172B3","#64B5CD","#E17C05",
-      "#DD8452","#937860","#DA8BC3","#8C8C8C","#A6CEE3","#B2DF8A",
-      "#FB9A99","#FDBF6F","#CAB2D6","#6A3D9A","#FF7F00","#B15928"
-    ];
+    const distinctColors = colors;
     const lineStyles = ["solid", "dot", "dash", "longdash", "dashdot", "longdashdot"];
     const colorForCombo = {}, styleForCombo = {};
     comboCols.forEach((c, i) => {
@@ -724,9 +787,9 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
     function renderChips() {
       const visibleCols = showAll ? comboCols : comboCols.slice(0, maxVisible);
       comboWrap.innerHTML =
-        visibleCols.map(c => `<button class="chip" data-col="${c}">${c} (${fmt(totalByCol[c])})</button>`).join('') +
+        visibleCols.map(c => `<button class="chip" data-col="${c}">${displayModalityLabel(c)} (${fmt(totalByCol[c])})</button>`).join('') +
         (comboCols.length > maxVisible
-          ? `<button id="toggleMore" class="chip" style="background:#f5f5f5;color:#333;">${showAll ? 'Show less ▲' : 'Show more ▼'}</button>`
+          ? `<button id="toggleMore" class="chip" style="background:#f5f5f5;color:#333;">${showAll ? 'Show less -' : 'Show more +'}</button>`
           : '') +
         `<button id="clearChips" class="chip" style="background:#eee;color:#333;margin-left:auto;">Clear</button>`;
 
@@ -738,24 +801,24 @@ function fmt(n) { return (n ?? 0).toLocaleString(); }
 
     function draw() {
       const cols = comboCols.filter(c => selected.has(c));
-const traces = cols.map((col, i) => ({
-  x: years,
-  y: other.map(r => num(r[col])),
-  name: `${col} (${fmt(totalByCol[col])})`,
-  type: 'scatter',
-  mode: 'lines+markers',
-  line: {
-    width: 3,
-    color: colorForCombo[col],
-    dash: styleForCombo[col]  // different dash per combo
-  },
-  marker: {
-    size: 8,
-    color: colorForCombo[col],
-    symbol: ['circle', 'square', 'diamond', 'cross', 'triangle-up', 'triangle-down'][i % 6]
-  },
-  hovertemplate: "%{y}<extra></extra>"
-}));
+      const traces = cols.map((col, i) => ({
+        x: years,
+        y: other.map(r => num(r[col])),
+        name: `${displayModalityLabel(col)} (${fmt(totalByCol[col])})`,
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {
+          width: 3,
+          color: colorForCombo[col],
+          dash: styleForCombo[col]  // different dash per combo
+        },
+        marker: {
+          size: 8,
+          color: colorForCombo[col],
+          symbol: ['circle', 'square', 'diamond', 'cross', 'triangle-up', 'triangle-down'][i % 6]
+        },
+        hovertemplate: "%{y}<extra></extra>"
+      }));
 
 
       if (traces.length === 0) {
@@ -819,7 +882,6 @@ const traces = cols.map((col, i) => ({
     footer.classList.toggle('collapsed');
   }
 </script>
-</body>
 
 <!-- Citation section -->
 <section id="citation" style="margin-top:10px;">
@@ -827,7 +889,7 @@ const traces = cols.map((col, i) => ({
   <p>
     Liu, X., Zhang, J., Zhou, S. <em>et al.</em>
     <em>Towards deployment-centric multimodal AI beyond vision and language.</em>
-    <em>Nature Machine Intelligence</em> 7, 1612–1624 (2025).
+    <em>Nature Machine Intelligence</em> 7, 1612-1624 (2025).
     <a href="https://doi.org/10.1038/s42256-025-01116-5" target="_blank" rel="noopener">
       https://doi.org/10.1038/s42256-025-01116-5
     </a>
@@ -857,12 +919,11 @@ const traces = cols.map((col, i) => ({
       <a href="https://github.com/multimodalAI/multimodal-ai-landscape">GitHub repository</a>.
     </p>
     <p>
-      © 2025 Multimodal AI Landscape · Licensed under the <a href="https://opensource.org/licenses/MIT">MIT Licence</a>
+      (c) 2025 Multimodal AI Landscape. Licensed under the <a href="https://opensource.org/licenses/MIT">MIT Licence</a>
     </p>
   </div>
 </footer>
 
-
-
-
+</body>
 </html>
+
