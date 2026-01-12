@@ -1,4 +1,4 @@
-# Multimodal AI Landscape
+# Multimodal AI Landscape - [Explorer🔍](https://multimodalai.github.io/multimodal-ai-landscape/)
 
 <div align="left">
 
@@ -7,12 +7,18 @@
 
 </div>
 
-**Interactive visualisation** using the [online Explorer](https://multimodalai.github.io/multimodal-ai-landscape/).
+Navigate trends with the [**Interactive Explorer**](https://multimodalai.github.io/multimodal-ai-landscape/).
 
-This repository analyses arXiv preprints from 2019 to 2024 to reveal emerging trends in multimodal AI research. 
+This repository analyses arXiv preprints from 2019 to 2025 to reveal emerging trends in multimodal AI research. 
 The raw data were sourced from [Kaggle arXiv Dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv), and filtered using targeted search queries. 
-As these queries are approximate, the conclusions emphasise overall trends supported by robust evidence,
-rather than precise numerical counts.
+
+As arXiv metadata are subject to retrospective updates, counts may vary between dataset snapshots.
+In addition, the query process is inherently approximate.
+The reported numbers should therefore be interpreted as indicators of overall trends rather than exact totals.
+
+The paper version is archived as the v2025 release.
+
+*arXiv metadata snapshot: 11 January 2026.*
 
 ## Data Filtering
 
@@ -42,17 +48,17 @@ The search terms and queries used are detailed in the query table below.
 ## Data Files
 
 The `data` folder contains the raw data, as follows:
-- [`overall-preprint-counts.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/overall-preprint-counts.csv): Total counts of multimodal AI preprints from 2019 to 2024.
+- [`overall-preprint-counts.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/overall-preprint-counts.csv): Counts of multimodal AI preprints.
 
-- [`preprint-counts-by-combined-modality-number.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/preprint-counts-by-combined-modality-number.csv): Counts of preprints for different numbers of modalities combined from 2019 to 2024.
+- [`preprint-counts-by-combined-modality-number.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/preprint-counts-by-combined-modality-number.csv): Counts of preprints for different numbers of modalities combined.
 
-- [`preprint-counts-by-modality.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/preprint-counts-by-modality.csv): Counts of individual modalities from 2019 to 2024.
+- [`preprint-counts-by-modality.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/preprint-counts-by-modality.csv): Counts of individual modalities.
 
-- [`modality-combination-breakdown.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/modality-combination-breakdown.csv): Counts of pairwise, triple, and quadruple modality combinations from 2019 to 2024.
+- [`modality-combination-breakdown.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/modality-combination-breakdown.csv): Counts of pairwise, triple, and quadruple modality combinations.
 
-- [`modality-pairs-2024.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/modality-pairs-2024.csv): Counts of different modality pairs published in 2024.
+- `modality-pairs-YYYY.csv`: Counts of preprints by modality pair for a given year (e.g., [`2024`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/modality-pairs-2024.csv), [`2025`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/modality-pairs-2025.csv)).
 
-- [`other-modality-combinations-by-year.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/other-modality-combinations-by-year.csv): Yearly counts for preprints using less common modality combinations from 2019 to 2024.
+- [`other-modality-combinations-by-year.csv`](https://github.com/multimodalAI/multimodal-ai-landscape/blob/main/data/other-modality-combinations-by-year.csv): Counts for preprints using less common modality combinations.
 
 ## Citation
 ```
