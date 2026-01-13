@@ -30,6 +30,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--gap);
+    align-items: stretch;
   }
   @media (max-width: 980px) {
     .grid { grid-template-columns: 1fr; }
@@ -41,7 +42,8 @@
     background: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    height: 100%;
   }
   .card h2 {
     margin: 6px 8px 10px;
@@ -66,6 +68,7 @@
     width: 100%;
     flex-grow: 1;
     min-height: 480px;
+    margin-top: auto;
   }
   select { padding: 6px 10px; }
   .chip {
@@ -259,7 +262,7 @@
 
   <!-- 4 -->
   <div class="card">
-    <h2>Fig. 4 | Breakdown of pairwise, triple, quadruple, and quintuple modality combinations</h2>
+    <h2>Fig. 4 | Pairwise, triple, quadruple, and quintuple modality combinations</h2>
     <div class="row" id="typeChips"></div>
     <div id="chart4" class="chart"></div>
   </div>
