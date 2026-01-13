@@ -45,6 +45,10 @@
     justify-content: flex-start;
     height: 100%;
   }
+  .card.align-bottom .chart {
+    flex: 0 0 auto;
+    margin-top: auto;
+  }
   .card h2 {
     margin: 6px 8px 10px;
     padding: 8px 12px;
@@ -68,7 +72,6 @@
     width: 100%;
     flex-grow: 1;
     min-height: 480px;
-    margin-top: auto;
   }
   select { padding: 6px 10px; }
   .chip {
@@ -241,13 +244,13 @@
 
 <div class="grid">
   <!-- 1 -->
-  <div class="card">
+  <div class="card align-bottom">
     <h2>Fig. 1 | Yearly growth of multimodal AI preprints</h2>
     <div id="chart1" class="chart"></div>
   </div>
 
   <!-- 2 -->
-  <div class="card">
+  <div class="card align-bottom">
     <h2>Fig. 2 | Multimodal AI preprints by modality</h2>
     <div class="row" id="modChips"></div>
     <div id="chart2" class="chart"></div>
