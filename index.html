@@ -151,17 +151,39 @@
     background: var(--header-bg);
     border: 1px solid var(--header-border);
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 0;
     margin: 0 0 16px;
     box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    overflow: hidden;
+  }
+
+  .page-header-summary{
+    cursor: pointer;
+    padding: 14px 20px;
+    font-weight: 600;
+    background: #f2f2f2;
+    border-bottom: 1px solid var(--header-border);
+    list-style: none;
+  }
+
+  .page-header-summary::marker{
+    content: "";
+  }
+
+  .page-header-summary::-webkit-details-marker{
+    display: none;
   }
 
   .page-header h1{
-    margin: 0 0 6px;
+    margin: 0;
     font-size: 28px;
     line-height: 1.25;
     font-weight: 650;
     color: var(--header-text);
+  }
+
+  .page-header-body{
+    padding: 8px 20px 16px;
   }
 
   .page-header .muted{
@@ -186,29 +208,31 @@
 
 
 <body>
-  <header class="page-header">
-    <h1>Multimodal AI Landscape Explorer</h1>
-    <p class="muted">
-      This page presents data visualisations for the Nature Machine Intelligence Perspective paper
-      <a href="https://www.nature.com/articles/s42256-025-01116-5" target="_blank" rel="noopener">
-        <em>Towards deployment-centric multimodal AI beyond vision and language</em></a>.
-      A preprint version is available at
-      <a href="https://arxiv.org/abs/2504.03603" target="_blank" rel="noopener"><em>arXiv:2504.03603</em></a>.
-    </p>
+  <details class="page-header" open>
+    <summary class="page-header-summary">
+      <h1>Multimodal AI Landscape Explorer</h1>
+    </summary>
+    <div class="page-header-body">
+      <p class="muted">
+        This page presents data visualisations for the Nature Machine Intelligence Perspective paper
+        <a href="https://www.nature.com/articles/s42256-025-01116-5" target="_blank" rel="noopener">
+          <em>Towards deployment-centric multimodal AI beyond vision and language</em></a>.
+        A preprint version is available at
+        <a href="https://arxiv.org/abs/2504.03603" target="_blank" rel="noopener"><em>arXiv:2504.03603</em></a>.
+      </p>
 
-    <p class="muted">
-      The analysis covers arXiv preprints from 2019 to 2025 and highlights emerging research trends in multimodal AI, using
-      data derived from the
-      <a href="https://www.kaggle.com/datasets/Cornell-University/arxiv" target="_blank" rel="noopener">
-        <em>Kaggle arXiv Dataset</em></a>.
-      It is updated annually, with the latest update in January 2026 based on a metadata snapshot downloaded on 11 January 2026.
-    </p>
-    
-    <p class="muted">
-      As arXiv metadata are subject to retrospective updates, counts may vary slightly between dataset snapshots.
-      The reported numbers should be interpreted as indicators of overall trends rather than exact totals.
-    </p>
-  </header>
+      <p class="muted">
+        The analysis covers arXiv preprints from 2019 to 2025 and highlights emerging research trends in multimodal AI, using
+        data derived from the
+        <a href="https://www.kaggle.com/datasets/Cornell-University/arxiv" target="_blank" rel="noopener">
+          <em>Kaggle arXiv Dataset</em></a>.
+        It is updated annually, with the latest update in January 2026 based on a metadata snapshot downloaded on 11 January 2026.
+     
+      <p class="muted">
+        The reported numbers should be interpreted as indicators of overall trends rather than exact totals.
+      </p>
+    </div>
+  </details>
 
 
 
@@ -926,4 +950,3 @@ function displayModalityLabel(label) {
 
 </body>
 </html>
-
