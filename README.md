@@ -6,15 +6,13 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2504.03603-%3CCOLOR%3E.svg)](https://arxiv.org/abs/2504.03603)
 ![Last updated](https://img.shields.io/badge/Last%20updated-11%20Jan%202026-6c757d)
 
-
-
 </div>
 
 Navigate with the [**Interactive Explorer**](https://multimodalai.github.io/multimodal-ai-landscape/).
 
 <div align="center">
   <a href="https://multimodalai.github.io/multimodal-ai-landscape/">
-    <img src="explorer-preview.png" alt="Interactive Explorer preview" width="600">
+    <img src="explorer-preview.png" alt="Interactive Explorer preview" width="800">
   </a>
 </div>
 <div align="center" style="margin-top: 0;">
