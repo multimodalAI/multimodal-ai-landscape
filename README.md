@@ -4,10 +4,13 @@
 
 [![DOI:10.1038/s42256-025-01116-5](https://zenodo.org/badge/DOI/10.1038/s42256-025-01116-5.svg)](https://doi.org/10.1038/s42256-025-01116-5)
 [![arXiv](https://img.shields.io/badge/arXiv-2504.03603-%3CCOLOR%3E.svg)](https://arxiv.org/abs/2504.03603)
+![Data snapshot](https://img.shields.io/badge/Data%20snapshot-11%20Jan%202026-6c757d)
+
+
 
 </div>
 
-Navigate trends with the [**Interactive Explorer**](https://multimodalai.github.io/multimodal-ai-landscape/).
+Navigate with the [**Interactive Explorer**](https://multimodalai.github.io/multimodal-ai-landscape/).
 
 This repository analyses arXiv preprints from 2019 to 2025 to reveal emerging trends in multimodal AI research. 
 The raw data were sourced from [Kaggle arXiv Dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv), and filtered using targeted search queries. 
@@ -17,8 +20,6 @@ In addition, the query process is inherently approximate.
 The reported numbers should therefore be interpreted as indicators of overall trends rather than exact totals.
 
 The paper version is archived as the v2025 release.
-
-*arXiv metadata snapshot: 11 January 2026.*
 
 ## Data Filtering
 
