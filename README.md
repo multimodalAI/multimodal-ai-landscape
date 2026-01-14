@@ -15,10 +15,9 @@ Navigate with the [**Interactive Explorer**](https://multimodalai.github.io/mult
     <img src="explorer-preview.png" alt="Interactive Explorer preview" width="800">
   </a>
 </div>
-<div align="center" style="margin-top: 0;">
+<div align="center" style="margin-top: 0; margin-bottom: 12px;">
   <em>Click the image to explore.</em>
 </div>
-
 
 This repository analyses arXiv preprints from 2019 to 2025 to reveal emerging trends in multimodal AI research. 
 The raw data were sourced from [Kaggle arXiv Dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv), and filtered using targeted search queries. 
