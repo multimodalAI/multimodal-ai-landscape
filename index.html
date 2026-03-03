@@ -10,988 +10,510 @@
   gtag('config', 'G-DHNY17JS1G');
 </script>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Multimodal AI Landscape Explorer</title>
-<meta name="description" content="Interactive exploration of multimodal AI research trends.">
+<meta name="description" content="Interactive data visualisations exploring multimodal AI research trends from 2019-2025, based on the Nature Machine Intelligence Perspective paper."/>
+<link rel="canonical" href="https://multimodalai.github.io/multimodal-ai-landscape/"/>
 
-<link rel="canonical" href="https://multimodalai.github.io/multimodal-ai-landscape/" />
+<meta property="og:title"       content="Multimodal AI Landscape Explorer"/>
+<meta property="og:description" content="Interactive exploration of multimodal AI research trends, 2019-2025."/>
+<meta property="og:type"        content="website"/>
+<meta property="og:url"         content="https://multimodalai.github.io/multimodal-ai-landscape/"/>
+<meta property="og:image"       content="https://multimodalai.github.io/multimodal-ai-landscape/og-image.png"/>
+<meta name="twitter:card"       content="summary_large_image"/>
+<meta name="twitter:title"      content="Multimodal AI Landscape Explorer"/>
+<meta name="twitter:description"content="Interactive exploration of multimodal AI research trends."/>
+<meta name="twitter:image"      content="https://multimodalai.github.io/multimodal-ai-landscape/og-image.png"/>
 
-<meta property="og:title" content="Multimodal AI Landscape Explorer" />
-<meta property="og:description" content="Interactive exploration of multimodal AI research trends." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://multimodalai.github.io/multimodal-ai-landscape/" />
-<meta property="og:image" content="https://multimodalai.github.io/multimodal-ai-landscape/og-image.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Preview of the Multimodal AI Landscape Explorer." />
-
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Multimodal AI Landscape Explorer" />
-<meta name="twitter:description" content="Interactive exploration of multimodal AI research trends." />
-<meta name="twitter:image" content="https://multimodalai.github.io/multimodal-ai-landscape/og-image.png" />
-<meta name="twitter:image:alt" content="Preview of the Multimodal AI Landscape Explorer." />
-
-<!-- Libraries (same versions, same loading order) -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/multimodalai-logo.png">
+<link rel="apple-touch-icon" href="assets/img/multimodalai-logo.png">
+<link rel="stylesheet" href="assets/css/styles.css"/>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<style>
-  :root {
-    --gap: 14px;
-    --header-bg: #f7f7f7;   /* light, portal-like */
-    --header-border: #e6e6e6;
-    --header-text: #1f2937;
-    --header-subtext: #555;
-  }
-  * { box-sizing: border-box; }
-  body {
-    font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    margin: 24px;
-  }
-  h1 { margin: 0 0 12px; }
-  .muted { color: #666; margin: 0 0 18px; }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--gap);
-    align-items: stretch;
-  }
-  @media (max-width: 980px) {
-    .grid { grid-template-columns: 1fr; }
-  }
-  .card {
-    border: 1px solid #e6e6e6;
-    border-radius: 12px;
-    padding: 12px;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 100%;
-  }
-  .card.align-bottom .chart {
-    flex: 0 0 auto;
-    margin-top: auto;
-  }
-  .card h2 {
-    margin: 6px 8px 10px;
-    padding: 8px 12px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #222;
-    background: #fafafa;
-    border-bottom: 1px solid #eaeaea;
-    border-radius: 10px 10px 0 0;
-  }
-  .row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin: 14px 8px 4px;
-  }
-  .row.right { margin-left: 8px; justify-content: flex-end; gap: 8px; }
-  .label-right { margin-left: auto; }
-  .chart {
-    width: 100%;
-    flex-grow: 1;
-    min-height: 480px;
-  }
-  select { padding: 6px 10px; }
-  .chip {
-    border: 1px solid #ddd;
-    border-radius: 999px;
-    padding: 6px 12px;
-    background: #fff;
-    cursor: pointer;
-    transition: 0.15s;
-  }
-  .chip.active {
-    background: #666;
-    color: #fff;
-    border-color: #666;
-  }
-  footer.footer {
-    margin-top: 40px;
-    background: #f7f7f7;
-    border: 1px solid #e6e6e6;
-    border-radius: 12px;
-    font-size: 14px;
-    color: #555;
-    line-height: 1;
-    overflow: hidden;
-    transition: max-height 0.35s ease;
-  }
-
-  .footer-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 20px;
-    cursor: pointer;
-    font-weight: 600;
-    background: #f2f2f2;
-    border-bottom: 1px solid #e6e6e6;
-  }
-
-  .footer-header span {
-    transition: transform 0.25s ease;
-  }
-
-  .footer-content {
-    padding: 1px 24px;
-  }
-
-  footer.footer a {
-    color: #3366cc;
-    text-decoration: none;
-  }
-
-  footer.footer a:hover {
-    text-decoration: underline;
-  }
-  /* Collapsed state */
-  footer.footer.collapsed {
-    max-height: 48px; /* header height only */
-  }
-
-  footer.footer.collapsed .footer-header span {
-    transform: rotate(-90deg);
-  }
-  /* === Fix for chart 5 chips spacing === */
-  #pairChips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;        /* horizontal+vertical spacing between chips */
-    align-items: center;
-  }
-  #pairYearChips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    align-items: center;
-  }
-  #pairYearChips .year-label {
-    font-size: 13px;
-    color: #555;
-    margin-right: 4px;
-  }
-  /* --- Portal-style page header --- */
-  .page-header{
-    background: var(--header-bg);
-    border: 1px solid var(--header-border);
-    border-radius: 12px;
-    padding: 0;
-    margin: 0 0 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.04);
-    overflow: hidden;
-  }
-
-  .page-header-summary{
-    cursor: pointer;
-    padding: 14px 20px;
-    font-weight: 600;
-    background: #f2f2f2;
-    border-bottom: 1px solid var(--header-border);
-    list-style: none;
-  }
-
-  .page-header-summary::marker{
-    content: "";
-  }
-
-  .page-header-summary::-webkit-details-marker{
-    display: none;
-  }
-
-  .page-header h1{
-    margin: 0;
-    font-size: 28px;
-    line-height: 1.25;
-    font-weight: 650;
-    color: var(--header-text);
-  }
-
-  .page-header-body{
-    padding: 8px 20px 16px;
-  }
-
-  .page-header .muted{
-    margin: 0;
-    color: var(--header-subtext);
-    font-size: 16px;
-    line-height: 2;
-  }
-
-  /* optional: stick the header at top on scroll (portal feel) */
-  @media (min-width: 720px){
-    .page-header.is-sticky{
-      position: sticky; top: 12px; z-index: 10;
-      backdrop-filter: blur(3px);
-    }
-  }
-
-  /* keep a bit more air to the grid after a prominent header */
-  .grid{ margin-top: 6px; }
-</style>
 </head>
 
-
-<body>
-  <details class="page-header" open>
-    <summary class="page-header-summary">
-      <h1>Multimodal AI Landscape Explorer</h1>
-    </summary>
-    <div class="page-header-body">
-    <p class="muted">
-      This page presents data visualisations based on the Nature Machine Intelligence Perspective paper
-      <a href="https://www.nature.com/articles/s42256-025-01116-5" target="_blank" rel="noopener">
-        <em>Towards deployment-centric multimodal AI beyond vision and language</em>
-      </a>.
-      A preprint version is available at
-      <a href="https://arxiv.org/abs/2504.03603" target="_blank" rel="noopener">
-        <em>arXiv:2504.03603</em>
-      </a>.
-    </p>
-
-    <p class="muted">
-      The analysis covers arXiv preprints from 2019 to 2025 and highlights emerging research trends in multimodal AI, using
-      data derived from the
-      <a href="https://www.kaggle.com/datasets/Cornell-University/arxiv" target="_blank" rel="noopener">
-        Kaggle arXiv Dataset
-      </a>.
-      The data is updated annually, with the latest update in January 2026.
-    </p>
-
-    <p class="muted">
-      The reported numbers should be interpreted as indicators of overall trends rather than exact totals.
-    </p>
-
-    <p class="muted">
-        Star the
-        <a href="https://github.com/multimodalAI/multimodal-ai-landscape" target="_blank" rel="noopener">
-          GitHub repository
-        </a>
-        to support the project.
-      </p>
-
-    </div>
-  </details>
-
-
-
-<div class="grid">
-  <!-- 1 -->
-  <div class="card align-bottom">
-    <h2>Fig. 1 | Yearly growth of multimodal AI preprints</h2>
-    <div id="chart1" class="chart"></div>
-  </div>
-
-  <!-- 2 -->
-  <div class="card align-bottom">
-    <h2>Fig. 2 | Multimodal AI preprints by modality</h2>
-    <div class="row" id="modChips"></div>
-    <div id="chart2" class="chart"></div>
-  </div>
-
-  <!-- 3 -->
-  <div class="card">
-    <h2>Fig. 3 | Multimodal AI preprints by the number of combined modalities</h2>
-    <div class="row" id="numChips"></div>
-    <div id="chart3" class="chart"></div>
-  </div>
-
-  <!-- 4 -->
-  <div class="card">
-    <h2>Fig. 4 | Pairwise, triple, quadruple, and quintuple modality combinations</h2>
-    <div class="row" id="typeChips"></div>
-    <div id="chart4" class="chart"></div>
-  </div>
-
-  <!-- 5 -->
-  <div class="card">
-    <h2>Fig. 5 | Modality pairs</h2>
-    <div class="row">
-      <div id="pairYearChips"></div>
-      <div id="pairChips"></div>
-      <label class="label-right">Top&nbsp;
-        <select id="pairTopN">
-          <option>5</option>
-          <option selected>10</option>
-          <option>20</option>
-          <option>All</option>
-        </select>
-      </label>
-    </div>
-    <div id="chart5" class="chart"></div>
-  </div>
-
-  <!-- 6 -->
-  <div class="card">
-    <h2>Fig. 6 | Underexplored modality combinations</h2>
-    <div class="row" id="comboChips"></div>
-    <div id="chart6" class="chart"></div>
-  </div>
-</div>
-
-<script>
-/* =========================================================
-   Utilities and helpers
-========================================================= */
-
-
-// Color palette and mapping
-const colorMap = {
-  "Vision": "#5496CE",       // blue
-  "Language": "#5EB342",     // green
-  "TimeSeries": "#E9C54E",  //  yellow
-  "Graph": "#F29742",        // orange
-  "Sensor": "#B778B3",       // purple
-  "Spatial": "#96A0B3",      // grey
-  "Audio": "#DC6464",        // red
-  "Tabular": "#C5C500",      // olive
-
-  "Vision and Language": "#5496CE", // blue
-  "Vision and Others": "#5EB342", // green
-  "Language and Others": "#E9C54E", // yellow
-  "Others": "#F29742", // orange
-
-  "Pairwise": "#5496CE",
-  "Triple": "#5EB342",
-  "Quadruple": "#E9C54E",
-  "Quintuple": "#F29742",
-
-  "AI": "#DC6464",
-  "Multimodal AI": "#5496CE"
-};
-
-// Extended categorical palette
-const colors = [
-  "#5496CE", // blue
-  "#5EB342", // green
-  "#E9C54E", // yellow
-  "#F29742", // orange
-  "#B778B3", // brown
-  "#96A0B3", // grey
-  "#DC6464", // red
-  "#C5C500", // olive
-  "#E0DCCA", // tone
-  "#96CED3", // teal
-  "#D3A9CE", // purple
-];
-
-// Basic helpers
-function centerLegend() { return { orientation: "h", x: 0.5, xanchor: "center", y: 1.05, yanchor: "bottom" }; }
-function num(x) {
-  const n = Number(String(x).match(/-?\d+(\.\d+)?/)?.[0]);
-  return Number.isFinite(n) ? n : null;
-}
-function safeMax(arr) {
-  const vals = arr.filter(v => Number.isFinite(v));
-  return vals.length ? Math.max(...vals) : 0;
-}
-
-// CSV loader (headered data)
-function csv(url) {
-  return new Promise((resolve, reject) =>
-    Papa.parse(url, {
-      download: true, header: true, skipEmptyLines: true,
-      complete: r => resolve(r.data), error: reject
-    })
-  );
-}
-
-// Chip factory to reduce duplicated code (keeps original behavior/appearance)
-function makeChipGroup(container, labels, { multi = true, defaultOn = [] } = {}) {
-  const entries = labels.map(l => (typeof l === 'string' ? { value: l, label: l } : l));
-  container.innerHTML = entries.map(l => `<button class="chip" data-val="${l.value}">${l.label}</button>`).join('');
-  const defaultVals = entries.map(l => l.value);
-  const selected = new Set(defaultOn.length ? defaultOn : (multi ? defaultVals : [defaultVals[0]]));
-
-  function sync() {
-    [...container.querySelectorAll('.chip')].forEach(btn => {
-      const on = selected.has(btn.dataset.val);
-      btn.classList.toggle('active', on);
-    });
-  }
-  function toggle(value) {
-    if (multi) {
-      selected.has(value) ? selected.delete(value) : selected.add(value);
-    } else {
-      selected.clear(); selected.add(value);
-    }
-    sync();
-  }
-
-  container.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-val]');
-    if (!btn) return;
-    toggle(btn.dataset.val);
-    container.dispatchEvent(new CustomEvent('chips-change', { detail: { selected: new Set(selected) } }));
-  });
-
-  sync();
-  return { selected, sync };
-}
-
-// Pretty number for annotations
-function fmt(n) { return (n ?? 0).toLocaleString(); }
-// Normalize modality labels for display without changing data keys.
-function displayModalityLabel(label) {
-  return String(label).replace(/\bTimeSeries\b/g, 'Time series');
-}
-
-/* =========================================================
-   Main: load data and render charts
-========================================================= */
-(async function main() {
-
-  /* ========== 1. Overall preprint counts (bar + secondary y line) ========== */
-  async function renderChart1() {
-    const overall = await csv('./data/overall-preprint-counts.csv'); // columns: Year, AI, Multimodal AI
-    const years = overall.map(r => num(r.Year)).filter(v => v != null);
-    const ai    = overall.map(r => num(r['AI']));
-    const mmai  = overall.map(r => num(r['Multimodal AI']));
-    const pct   = mmai.map((v, i) => (ai[i] && ai[i] > 0) ? v / ai[i] : null);
-
-    const barTrace = {
-      x: years, y: mmai, name: 'Multimodal AI preprints', type: 'bar',
-      marker: { color: colorMap['Multimodal AI'], line: { color: colorMap['Multimodal AI'], width: 1 } }, width: 0.6,
-      hovertemplate: "%{y}<extra></extra>", opacity: 0.85
-    };
-    const lineTrace = {
-      x: years, y: pct, name: 'Multimodal AI as a share of AI (%)',
-      type: 'scatter', mode: 'lines+markers',
-      yaxis: 'y2',
-      line: { width: 3, color: colorMap['AI'], dash: 'dash' },
-      marker: { size: 8, color: colorMap['AI'], symbol: 'diamond' },
-      hovertemplate: "%{y:.1%}<extra></extra>"
-    };
-
-
-    Plotly.newPlot('chart1', [barTrace, lineTrace], {
-      xaxis: { title: 'Year', dtick: 1 },
-      yaxis: { title: 'Count' },
-      yaxis2: {
-        title: 'Proportion',
-        overlaying: 'y', side: 'right', tickformat: '.1%',
-        range: [0, safeMax(pct) ? safeMax(pct) * 1.2 : 0.05]
-      },
-      legend: centerLegend(),
-      margin: { l: 70, r: 70, t: 60, b: 60 }
-    }, { responsive: true });
-  }
-
-  /* ========== 2. By modality (multi-select chips) ========== */
-  async function renderChart2() {
-    const byMod = await csv('./data/preprint-counts-by-modality.csv');
-    const years = byMod.map(r => num(r.Year));
-    const modCols = Object.keys(byMod[0]).filter(k => k.toLowerCase() !== 'year');
-    const modItems = modCols.map(k => ({ value: k, label: displayModalityLabel(k) }));
-
-    const wrap = document.getElementById('modChips');
-    const chips = makeChipGroup(wrap, modItems, { multi: true, defaultOn: modCols });
-
-    // add Clear button (same visual as chart 6)
-    const clear2 = document.createElement('button');
-    clear2.className = 'chip';
-    clear2.textContent = 'Clear';
-    clear2.style.background = '#eee';
-    clear2.style.color = '#333';
-    clear2.style.marginLeft = 'auto'; // push to the right
-    wrap.appendChild(clear2);
-
-    // Clear = deselect all modalities and redraw
-    clear2.addEventListener('click', () => {
-      chips.selected.clear();
-      chips.sync();
-      draw([]); // show the select-modalities placeholder
-    });
-
-    function draw(cols) {
-      const traces = cols.map((k, i) => ({
-        x: years, y: byMod.map(r => num(r[k])), name: displayModalityLabel(k), type: 'bar',
-        marker: { color: colorMap[k] || colors[i % colors.length], opacity: 0.85 },
-        hovertemplate: "%{y}<extra></extra>"
-      }));
-
-      if (traces.length === 0) {
-        Plotly.newPlot('chart2', [], {
-          xaxis: { title: 'Year', dtick: 1 }, yaxis: { title: 'Count' },
-          annotations: [{
-            text: 'Select one or more modalities to display',
-            xref: 'paper', yref: 'paper', x: 0.5, y: 0.5, showarrow: false,
-            font: { size: 14, color: '#666' }
-          }],
-          legend: centerLegend()
-        }, { responsive: true });
-        return;
-      }
-
-      Plotly.newPlot('chart2', traces, {
-        barmode: 'group',
-        xaxis: { title: 'Year', dtick: 1 },
-        yaxis: { title: 'Count' },
-        legend: centerLegend()
-      }, { responsive: true });
-    }
-
-    draw([...chips.selected]);
-    wrap.addEventListener('chips-change', (e) => draw([...e.detail.selected]));
-  }
-
-  /* ========== 3. By number of combined modalities (chips) ========== */
-  async function renderChart3() {
-    const byNum = await csv('./data/preprint-counts-by-combined-modality-number.csv');
-    const years = byNum.map(r => num(r.Year));
-    const numCols = Object.keys(byNum[0]).filter(k => k.toLowerCase() !== 'year');
-
-    const wrap = document.getElementById('numChips');
-    const chips = makeChipGroup(wrap, numCols, { multi: true, defaultOn: numCols });
-
-    function draw(cols) {
-      const traces = cols.map((k, i) => ({
-        x: years, y: byNum.map(r => num(r[k])), name: k, type: 'bar',
-        marker: { color: colorMap[k] || colors[i % colors.length] },
-        hovertemplate: "%{y}<extra></extra>"
-      }));
-
-      if (traces.length === 0) {
-        Plotly.newPlot('chart3', [], {
-          xaxis: { title: 'Year', dtick: 1 }, yaxis: { title: 'Count' },
-          annotations: [{
-            text: 'Select one or more combinations to display',
-            xref: 'paper', yref: 'paper', x: 0.5, y: 0.5, showarrow: false,
-            font: { size: 14, color: '#666' }
-          }],
-          legend: centerLegend()
-        }, { responsive: true });
-        return;
-      }
-
-      Plotly.newPlot('chart3', traces, {
-        barmode: 'group',
-        xaxis: { title: 'Year', dtick: 1 },
-        yaxis: { title: 'Count' },
-        legend: centerLegend()
-      }, { responsive: true });
-    }
-
-    draw([...chips.selected]);
-    wrap.addEventListener('chips-change', (e) => draw([...e.detail.selected]));
-  }
-
-  /* ========== 4. Breakdown (Type single-select chips) ========== */
-  async function renderChart4() {
-    const breakdown = await csv('./data/modality-combination-breakdown.csv');
-    const typeKey = Object.keys(breakdown[0] || {}).find(k => k.toLowerCase() === 'type') || 'Type';
-    const types = [...new Set(breakdown.map(r => String(r[typeKey] || '').trim()))].filter(Boolean);
-    const typeItems = types.map(t => ({ value: t, label: t ? t[0].toUpperCase() + t.slice(1) : t }));
-
-    const wrap = document.getElementById('typeChips');
-    const chips = makeChipGroup(wrap, typeItems, { multi: false, defaultOn: [types[0]] });
-
-    function draw(typeSel) {
-      const filtered = breakdown.filter(r => String(r[typeKey] || '').trim() === typeSel);
-      if (!filtered.length) { Plotly.purge('chart4'); return; }
-
-      const years = filtered.map(r => num(r.Year));
-      const cats = ["Vision and Language", "Vision and Others", "Language and Others", "Others"]
-        .filter(k => k in filtered[0]);
-
-      function displayLabel(csvKey, typeSel) {
-        const type = String(typeSel).toLowerCase();
-        const isPair = type === 'pairwise';
-        const isTriple = type === 'triple';
-        const isQuad = type === 'quadruple';
-
-        switch (csvKey) {
-          case "Vision and Language":
-            if (isPair) return "Vision & Language";
-            if (isTriple) return "Vision & Language & Other";
-            if (isQuad) return "Vision & Language & Others";
-            return "Vision & Language";
-
-          case "Vision and Others":
-            return isPair ? "Vision & Other" : "Vision & Others";
-
-          case "Language and Others":
-            return isPair ? "Language & Other" : "Language & Others";
-
-          default:
-            return csvKey;
-        }
-      }
-
-      const traces = cats.map((k, i) => ({
-        x: years,
-        y: filtered.map(r => num(r[k])),
-        name: displayLabel(k, typeSel),
-        type: 'bar',
-        marker: { color: colorMap[k] || colors[i % colors.length] },
-        hovertemplate: "%{y}<extra></extra>"
-      }));
-
-      Plotly.newPlot('chart4', traces, {
-        barmode: 'group',
-        xaxis: { title: 'Year', dtick: 1 },
-        yaxis: { title: 'Count' },
-        legend: centerLegend()
-      }, { responsive: true });
-    }
-    draw([...chips.selected][0]);
-    wrap.addEventListener('chips-change', (e) => draw([...e.detail.selected][0]));
-  }
-
-  /* ========== 5. Modality pairs (multi-select chips + TopN) ========== */
-  async function renderChart5() {
-    const yearOptions = [2024, 2025]; // add new years here in ascending order
-    let currentYear = yearOptions[yearOptions.length - 1];
-    function splitModalities(label) {
-      return label.split('&').map(s => s.trim()).filter(Boolean);
-    }
-
-    let pairRows = [];
-    let allMods = [];
-
-    // Load as raw (header: false)
-    async function loadPairs(year) {
-      const pairsRaw = await new Promise((resolve, reject) =>
-        Papa.parse(`./data/modality-pairs-${year}.csv`, {
-          download: true, header: false, skipEmptyLines: true,
-          complete: r => resolve(r.data), error: reject
-        })
-      );
-      let pairLabels = (pairsRaw[0] || []).map(s => String(s).trim());
-      let pairCounts = (pairsRaw[1] || []).map(v => num(v));
-
-      // Drop the Year column if present (not a modality pair label).
-      if (pairLabels[0] && pairLabels[0].toLowerCase() === 'year') {
-        pairLabels = pairLabels.slice(1);
-        pairCounts = pairCounts.slice(1);
-      }
-
-      pairRows = pairLabels.map((lab, i) => ({
-        label: lab, count: pairCounts[i], mods: splitModalities(lab)
-      }));
-
-      const knownOrder = ["Vision","Language","Audio","TimeSeries","Sensor","Spatial","Graph","Tabular"];
-      const allModsSet = new Set(pairRows.flatMap(r => r.mods));
-      allMods = knownOrder.filter(m => allModsSet.has(m))
-        .concat([...allModsSet].filter(m => !knownOrder.includes(m)));
-    }
-
-    // Chips
-    const chipWrap = document.getElementById('pairChips');
-    const selectedMods = new Set();
-
-    // Year chips
-    const yearWrap = document.getElementById('pairYearChips');
-    yearWrap.innerHTML = `<span class="year-label">Year</span>` +
-      yearOptions.map(y => `<button class="chip" data-year="${y}">${y}</button>`).join('');
-
-    function syncYearChips() {
-      [...yearWrap.querySelectorAll('button[data-year]')].forEach(btn => {
-        btn.classList.toggle('active', Number(btn.dataset.year) === currentYear);
-      });
-    }
-
-    // row container that holds chips + TopN
-    const row5 = chipWrap.parentElement;
-
-    // add Clear button
-    const clear5 = document.createElement('button');
-    clear5.className = 'chip';
-    clear5.textContent = 'Clear';
-    clear5.style.background = '#eee';
-    clear5.style.color = '#333';
-    clear5.style.marginLeft = 'auto';
-
-    // insert before the TopN label (so Clear sits at the right, TopN at the far-right)
-    const topLabel = row5.querySelector('.label-right');
-    row5.insertBefore(clear5, topLabel);
-
-    // Clear = deselect all selected modalities for chart 5 and redraw
-    clear5.addEventListener('click', () => {
-      selectedMods.clear();
-      syncPairChips();
-      draw();
-    });
-
-    function renderPairChips() {
-      chipWrap.innerHTML = allMods
-        .map(m => `<button class="chip" data-mod="${m}">${displayModalityLabel(m)}</button>`)
-        .join('');
-    }
-
-    function syncPairChips() {
-      [...chipWrap.querySelectorAll('.chip')].forEach(btn => {
-        btn.classList.toggle('active', selectedMods.has(btn.dataset.mod));
-      });
-    }
-
-    const selTopN = document.getElementById('pairTopN');
-    function getTopNValue() {
-      const v = selTopN.value;
-      return v === "All" ? Infinity : Number(v) || 15;
-    }
-
-    function draw() {
-      const needFilter = selectedMods.size > 0;
-      let filtered = needFilter
-        ? pairRows.filter(r => r.mods.some(m => selectedMods.has(m)))
-        : pairRows.slice();
-
-      filtered.sort((a, b) => (b.count || 0) - (a.count || 0));
-      const N = getTopNValue();
-      if (filtered.length > N) filtered = filtered.slice(0, N);
-
-      const labels = filtered.map(r => displayModalityLabel(r.label));
-      const values = filtered.map(r => r.count);
-
-      const baseColor = colors[0];
-      const hitFlags = filtered.map(r => r.mods.some(m => selectedMods.has(m)));
-      const barColors = hitFlags.map(hit => hit || !needFilter ? baseColor : '#d5dbe7');
-      const barOpacity = hitFlags.map(hit => hit || !needFilter ? 0.95 : 0.35);
-
-      function formatLabel(lab) {
-        if (selectedMods.size === 0) return lab;
-        let out = lab;
-        for (const m of selectedMods) {
-          const disp = displayModalityLabel(m);
-          out = out.replaceAll(disp, `<b>${disp}</b>`);
-        }
-        return out;
-      }
-
-      const maxVal = safeMax(values);
-      const annos = labels.map((lab, i) => ({
-        xref: 'x', yref: 'y',
-        x: -maxVal * 0.02, y: lab,
-        text: formatLabel(lab),
-        showarrow: false, align: 'right', xanchor: 'right',
-        font: { size: 13, color: hitFlags[i] || !needFilter ? '#222' : '#999' }
-      }));
-
-      Plotly.newPlot('chart5', [{
-        x: values, y: labels, type: 'bar', orientation: 'h',
-        marker: { color: barColors, opacity: barOpacity },
-        hovertemplate: "%{x}<extra></extra>"
-      }], {
-        xaxis: { title: 'Count', range: [ -maxVal * 0.15, maxVal * 1.05 ] },
-        yaxis: { showticklabels: false, autorange: 'reversed' },
-        annotations: annos,
-        margin: { l: 200, r: 40, t: 40, b: 60 },
-        showlegend: false
-      }, { responsive: true });
-    }
-
-    // Bindings
-    await loadPairs(currentYear);
-    renderPairChips();
-    syncPairChips();
-    syncYearChips();
-    draw();
-
-    chipWrap.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-mod]'); if (!btn) return;
-      const m = btn.dataset.mod;
-      if (selectedMods.has(m)) selectedMods.delete(m); else selectedMods.add(m);
-      syncPairChips();
-      draw();
-    });
-    selTopN.addEventListener('change', draw);
-
-    yearWrap.addEventListener('click', async (e) => {
-      const btn = e.target.closest('button[data-year]'); if (!btn) return;
-      const year = Number(btn.dataset.year);
-      if (year === currentYear) return;
-      currentYear = year;
-      selectedMods.clear();
-      syncYearChips();
-      await loadPairs(currentYear);
-      renderPairChips();
-      syncPairChips();
-      draw();
-    });
-  }
-
-  /* ========== 6. Underexplored combinations by year (multi-select chips, show more, clear) ========== */
-  async function renderChart6() {
-    const other = await csv('./data/other-modality-combinations-by-year.csv');
-    const years = other.map(r => num(r.Year));
-    const rawCols = Object.keys(other[0]).filter(k => k.toLowerCase() !== 'year');
-
-    function columnTotal(col) {
-      let s = 0;
-      for (const row of other) {
-        const v = num(row[col]);
-        if (Number.isFinite(v)) s += v;
-      }
-      return s;
-    }
-
-    const combosWithTotals = rawCols
-      .map(col => ({ col, total: columnTotal(col) }))
-      .sort((a, b) => b.total - a.total);
-
-    const comboCols = combosWithTotals.map(d => d.col);
-    const totalByCol = Object.fromEntries(combosWithTotals.map(d => [d.col, d.total]));
-
-    const comboWrap = document.getElementById('comboChips');
-    const maxVisible = 10;
-    let showAll = false;
-    const distinctColors = colors;
-    const lineStyles = ["solid", "dot", "dash", "longdash", "dashdot", "longdashdot"];
-    const colorForCombo = {}, styleForCombo = {};
-    comboCols.forEach((c, i) => {
-      colorForCombo[c] = distinctColors[i % distinctColors.length];
-      styleForCombo[c] = lineStyles[i % lineStyles.length];
-    });
-
-    // Initial selected: top 2
-    const selected = new Set(comboCols.slice(0, 2));
-
-    function renderChips() {
-      const visibleCols = showAll ? comboCols : comboCols.slice(0, maxVisible);
-      comboWrap.innerHTML =
-        visibleCols.map(c => `<button class="chip" data-col="${c}">${displayModalityLabel(c)} (${fmt(totalByCol[c])})</button>`).join('') +
-        (comboCols.length > maxVisible
-          ? `<button id="toggleMore" class="chip" style="background:#f5f5f5;color:#333;">${showAll ? 'Show less -' : 'Show more +'}</button>`
-          : '') +
-        `<button id="clearChips" class="chip" style="background:#eee;color:#333;margin-left:auto;">Clear</button>`;
-
-      // Sync active states
-      [...comboWrap.querySelectorAll('.chip[data-col]')].forEach(btn => {
-        btn.classList.toggle('active', selected.has(btn.dataset.col));
-      });
-    }
-
-    function draw() {
-      const cols = comboCols.filter(c => selected.has(c));
-      const traces = cols.map((col, i) => ({
-        x: years,
-        y: other.map(r => num(r[col])),
-        name: `${displayModalityLabel(col)} (${fmt(totalByCol[col])})`,
-        type: 'scatter',
-        mode: 'lines+markers',
-        line: {
-          width: 3,
-          color: colorForCombo[col],
-          dash: styleForCombo[col]  // different dash per combo
-        },
-        marker: {
-          size: 8,
-          color: colorForCombo[col],
-          symbol: ['circle', 'square', 'diamond', 'cross', 'triangle-up', 'triangle-down'][i % 6]
-        },
-        hovertemplate: "%{y}<extra></extra>"
-      }));
-
-
-      if (traces.length === 0) {
-        Plotly.newPlot('chart6', [], {
-          xaxis: { title: 'Year', dtick: 1 },
-          yaxis: { title: 'Count' },
-          annotations: [{
-            text: 'Select one or more combinations to display',
-            xref: 'paper', yref: 'paper', x: 0.5, y: 0.5, showarrow: false,
-            font: { size: 14, color: '#666' }
-          }]
-        }, { responsive: true });
-        return;
-      }
-
-      Plotly.newPlot('chart6', traces, {
-        xaxis: { title: 'Year', dtick: 1 },
-        yaxis: { title: 'Count' },
-        legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: 1.05, yanchor: 'bottom' }
-      }, { responsive: true });
-    }
-
-    renderChips();
-    draw();
-
-    comboWrap.addEventListener('click', (e) => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-
-      if (btn.id === 'toggleMore') {
-        showAll = !showAll;
-        renderChips();
-        return;
-      }
-      if (btn.id === 'clearChips') {
-        selected.clear();
-        renderChips();
-        draw();
-        return;
-      }
-      const col = btn.dataset.col;
-      if (!col) return;
-      selected.has(col) ? selected.delete(col) : selected.add(col);
-      renderChips();
-      draw();
-    });
-  }
-
-  // Run all renderers (same sequencing and behavior)
-  await renderChart1();
-  await renderChart2();
-  await renderChart3();
-  await renderChart4();
-  await renderChart5();
-  await renderChart6();
-})();
-</script>
-<script>
-  function toggleFooter() {
-    const footer = document.getElementById('pageFooter');
-    footer.classList.toggle('collapsed');
-  }
-</script>
-
-<!-- Citation section -->
-<section id="citation" style="margin-top:10px;">
-  <h3>Citation</h3>
-  <p>
-    Liu, X., Zhang, J., Zhou, S. <em>et al.</em>
-    <em>Towards deployment-centric multimodal AI beyond vision and language.</em>
-    <em>Nature Machine Intelligence</em> 7, 1612-1624 (2025).
-    <a href="https://doi.org/10.1038/s42256-025-01116-5" target="_blank" rel="noopener">
-      https://doi.org/10.1038/s42256-025-01116-5
+<body class="one-page">
+
+<!-- ── Top bar (compact branding + utility links) ────────── -->
+<header class="site-topbar" role="banner">
+  <div class="container-wide topbar-inner">
+    <a href="index.html" class="nav-logo" aria-label="Multimodal AI Landscape — home">
+      <img src="./assets/img/multimodalai-logo.png" alt="" class="nav-logo-img"
+           width="28" height="28" aria-hidden="true" onerror="this.style.display='none'">
+      Multimodal AI Landscape
     </a>
-  </p>
+    <div class="topbar-links">
+      <a href="https://www.nature.com/articles/s42256-025-01116-5"
+         target="_blank" rel="noopener" class="topbar-link">Paper&nbsp;↗</a>
+      <a href="https://github.com/multimodalAI/multimodal-ai-landscape"
+         class="topbar-github" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839
+            9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343
+            -3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608
+            1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647
+            .35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988
+            1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564
+            9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027
+            2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0
+            3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012
+            2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22
+            6.484 17.522 2 12 2z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
 
-  <details>
-    <summary style="cursor:pointer;color:#3366cc;">Show BibTeX</summary>
-    <pre style="background:#f7f7f7;padding:10px;border-radius:8px;overflow-x:auto;font-size:13px;">
-@article{liu2025towards,
-  title={Towards deployment-centric multimodal AI beyond vision and language},
-  author={Liu, Xianyuan and Zhang, Jiayang and Zhou, Shuo and van der Plas, Thijs L. and Vijayaraghavan, Avish and Grishina, Anastasiia and Zhuang, Mengdie and Schofield, Daniel and Tomlinson, Christopher and others},
-  journal={Nature Machine Intelligence},
-  volume={7},
-  pages={1612--1624},
-  year={2025},
-  doi={10.1038/s42256-025-01116-5}
-}</pre>
-  </details>
+<!-- ── Hero / About intro section ────────────────────────── -->
+<section class="dashboard-hero" aria-labelledby="hero-title">
+  <div class="container-wide">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="page-hero-eyebrow">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+            <circle cx="5" cy="5" r="5"/>
+          </svg>
+          Nature Machine Intelligence · 2025
+        </div>
+        <h1 id="hero-title">Multimodal AI Landscape Explorer</h1>
+        <p class="hero-body">
+          This page presents data visualisations based on the <em>Nature Machine Intelligence</em> Perspective paper
+          <a href="https://www.nature.com/articles/s42256-025-01116-5"
+             target="_blank" rel="noopener"><em>Towards deployment-centric multimodal AI beyond vision and language</em></a>.
+          A preprint version is available at
+          <a href="https://arxiv.org/abs/2504.03603" target="_blank" rel="noopener">arXiv:2504.03603</a>.
+        </p>
+        <p class="hero-body">
+          The analysis covers arXiv preprints from 2019 to 2025 and highlights emerging research trends
+          in multimodal AI, using data derived from the
+          <a href="https://www.kaggle.com/datasets/Cornell-University/arxiv"
+             target="_blank" rel="noopener">Kaggle arXiv Dataset</a>.
+        </p>
+        <p class="hero-body hero-body-note">
+          The data is updated annually, with the latest update in <strong>January 2026</strong>.
+          The reported numbers should be interpreted as indicators of overall trends rather than exact totals.
+        </p>
+      </div>
+      <div class="hero-meta-strip">
+        <span class="meta-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Coverage: 2019 – 2025
+        </span>
+        <span class="meta-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Last updated <span id="last-updated">February 2026</span>
+        </span>
+        <a href="https://github.com/multimodalAI/multimodal-ai-landscape"
+           target="_blank" rel="noopener" class="meta-badge meta-badge-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217
+              .682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158
+              -1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032
+              .892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113
+              -4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27
+              2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296
+              2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0
+              3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012
+              2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          ★ Star on GitHub
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
 
-<footer id="pageFooter" class="footer">
-  <div class="footer-header" onclick="toggleFooter()">About this page</div>
-  <div class="footer-content">
-    <p>
-      Built with <a href="https://plotly.com/javascript/">Plotly.js</a> and <a href="https://www.papaparse.com/">Papa Parse</a> for client-side visualisation.
-      The charts are rendered directly in the browser from processed CSV data stored in the
-      <a href="https://github.com/multimodalAI/multimodal-ai-landscape">GitHub repository</a>.
-    </p>
-    <p>
-      (c) 2025 Multimodal AI Landscape. Licensed under the <a href="https://opensource.org/licenses/MIT">MIT Licence</a>
-    </p>
+<!-- ── Key statistics ────────────────────────────────────── -->
+<section class="stats-band" aria-label="Dataset statistics">
+  <div class="container-wide">
+    <div id="datasets-stats">
+      <div class="stats-strip">
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:38%;border-radius:4px"></div>
+        </div>
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:28%;border-radius:4px"></div>
+        </div>
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:20%;border-radius:4px"></div>
+        </div>
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:20%;border-radius:4px"></div>
+        </div>
+      </div>
+    </div>
   </div>
-</footer>
+</section>
 
+<!-- ── Sticky figure navigation ──────────────────────────── -->
+<nav class="sub-nav" id="figure-nav" aria-label="Figure navigation">
+  <div class="container-wide sub-nav-inner">
+    <button class="sub-nav-toggle" id="fig-menu-toggle"
+            aria-expanded="false" aria-controls="fig-menu-panel">
+      <svg class="sub-nav-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <span class="sub-nav-toggle-text">Jump to figure</span>
+      <svg class="sub-nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <div class="sub-nav-panel" id="fig-menu-panel">
+      <a class="sub-nav-link" href="#fig1">Fig.&nbsp;1 · Growth</a>
+      <a class="sub-nav-link" href="#fig2">Fig.&nbsp;2 · By modality</a>
+      <a class="sub-nav-link" href="#fig3">Fig.&nbsp;3 · Combinations</a>
+      <a class="sub-nav-link" href="#fig4">Fig.&nbsp;4 · Breakdown</a>
+      <a class="sub-nav-link" href="#fig5">Fig.&nbsp;5 · Pairs</a>
+      <a class="sub-nav-link" href="#fig6">Fig.&nbsp;6 · Underexplored</a>
+      <button class="sub-nav-reset" id="resetAll" aria-label="Reset all filters by reloading the page">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" aria-hidden="true">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-4.95"/>
+        </svg>
+        Reset all
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Disclaimer ────────────────────────────────────────── -->
+<!-- <div class="container-wide" style="padding-top:24px">
+  <div class="disclaimer" role="note">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" aria-hidden="true">
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <span>The reported numbers are derived from keyword-based classification of arXiv metadata and should be
+    interpreted as <strong>indicators of overall trends</strong> rather than exact totals.
+  </div>
+</div> -->
+
+<!-- ── Dashboard — all six figures ────────────────────────── -->
+<main class="page-main" id="main-content" style="padding-top:8px">
+  <div class="container-wide">
+
+    <!-- ── Fig 1 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="fig1" aria-labelledby="title-fig1">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="title-fig1">
+            Fig. 1 · Yearly growth of multimodal AI preprints
+            <span class="help-tip" role="tooltip" tabindex="0"
+              data-tip="Annual count of multimodal AI arXiv preprints (bars, left axis) and their share of all AI preprints (dashed line, right axis).">?</span>
+          </span>
+          <div class="card-actions">
+            <button class="card-action-btn" data-png="chart1" aria-label="Download as PNG">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>PNG
+            </button>
+            <button class="card-action-btn" data-csv="chart1" aria-label="Download data as CSV">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>CSV
+            </button>
+          </div>
+        </div>
+        <div id="chart1" class="chart-wrap"></div>
+        <p class="card-caption">
+          Bars (left axis) show total multimodal AI preprint volume per year. The dashed line
+          (right axis) shows multimodal AI as a proportion of all AI preprints identified in the dataset.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Fig 2 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="fig2" aria-labelledby="title-fig2">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="title-fig2">
+            Fig. 2 · Multimodal AI preprints by modality
+            <span class="help-tip" role="tooltip" tabindex="0"
+              data-tip="Year-on-year preprint counts broken down by the primary modality of each paper. Use the chips to filter.">?</span>
+          </span>
+          <div class="card-actions">
+            <button class="card-action-btn" data-png="chart2" aria-label="Download as PNG">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>PNG
+            </button>
+            <button class="card-action-btn" data-csv="chart2" aria-label="Download data as CSV">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>CSV
+            </button>
+          </div>
+        </div>
+        <div class="card-controls chips-group" id="modChips" role="group"
+             aria-label="Filter by modality"></div>
+        <div id="chart2" class="chart-wrap"></div>
+        <p class="card-caption">
+          Vision and Language consistently dominate. Audio, Sensor, Graph, and Tabular modalities
+          show emerging — and accelerating — growth from 2022 onwards.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Fig 3 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="fig3" aria-labelledby="title-fig3">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="title-fig3">
+            Fig. 3 · Preprints by number of combined modalities
+            <span class="help-tip" role="tooltip" tabindex="0"
+              data-tip="How many distinct modalities each paper combines — pairwise, triple, quadruple, or quintuple.">?</span>
+          </span>
+          <div class="card-actions">
+            <button class="card-action-btn" data-png="chart3" aria-label="Download as PNG">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>PNG
+            </button>
+            <button class="card-action-btn" data-csv="chart3" aria-label="Download data as CSV">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>CSV
+            </button>
+          </div>
+        </div>
+        <div class="card-controls chips-group" id="numChips" role="group"
+             aria-label="Filter by combination count"></div>
+        <div id="chart3" class="chart-wrap"></div>
+        <p class="card-caption">
+          Pairwise combinations remain the most common. Triple-modality papers are growing fastest
+          proportionally, reflecting a trend towards richer and more complex multimodal systems.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Fig 4 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="fig4" aria-labelledby="title-fig4">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="title-fig4">
+            Fig. 4 · Pairwise, triple, quadruple, and quintuple modality combinations
+            <span class="help-tip" role="tooltip" tabindex="0"
+              data-tip="Within each combination type, the split between pairings that include Vision &amp; Language vs. other modality combinations.">?</span>
+          </span>
+          <div class="card-actions">
+            <button class="card-action-btn" data-png="chart4" aria-label="Download as PNG">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>PNG
+            </button>
+            <button class="card-action-btn" data-csv="chart4" aria-label="Download data as CSV">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>CSV
+            </button>
+          </div>
+        </div>
+        <div class="card-controls chips-group" id="typeChips" role="group"
+             aria-label="Select combination type"></div>
+        <div id="chart4" class="chart-wrap"></div>
+        <p class="card-caption">
+          Across all combination types, Vision &amp; Language pairings dominate.
+          The "Others" category captures novel pairings that do not involve Vision or Language
+          as a primary modality — an area of growing research interest.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Fig 5 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="fig5" aria-labelledby="title-fig5">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="title-fig5">
+            Fig. 5 · Modality pairs
+            <span class="help-tip" role="tooltip" tabindex="0"
+              data-tip="Ranked frequency of specific modality pairs. Click a modality chip to highlight pairs that include it. Use the year chips to switch between 2024 and 2025 data.">?</span>
+          </span>
+          <div class="card-actions">
+            <button class="card-action-btn" data-png="chart5" aria-label="Download as PNG">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>PNG
+            </button>
+          </div>
+        </div>
+        <div class="card-controls" style="flex-wrap:wrap;gap:8px;display:flex;align-items:center">
+          <div id="pairYearChips" class="chips-group" role="group" aria-label="Select year"></div>
+          <div id="pairChips"     class="chips-group" role="group" aria-label="Filter by modality"></div>
+          <div class="select-wrap">
+            Top&nbsp;
+            <select id="pairTopN" aria-label="Number of pairs to show">
+              <option>5</option>
+              <option selected>10</option>
+              <option>20</option>
+              <option>All</option>
+            </select>
+          </div>
+        </div>
+        <div id="chart5" class="chart-wrap"></div>
+        <p class="card-caption">
+          Vision &amp; Language is by far the most common pairing. Filtering by a specific modality
+          reveals which pairings are most or least explored relative to it.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Fig 6 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="fig6" aria-labelledby="title-fig6">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="title-fig6">
+            Fig. 6 · Underexplored modality combinations
+            <span class="help-tip" role="tooltip" tabindex="0"
+              data-tip="Trend lines for the less-common modality combinations — potential areas of future growth or underexplored research niches.">?</span>
+          </span>
+          <div class="card-actions">
+            <button class="card-action-btn" data-png="chart6" aria-label="Download as PNG">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>PNG
+            </button>
+            <button class="card-action-btn" data-csv="chart6" aria-label="Download data as CSV">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.5" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>CSV
+            </button>
+          </div>
+        </div>
+        <div class="card-controls chips-group" id="comboChips" role="group"
+             aria-label="Select modality combinations"></div>
+        <div id="chart6" class="chart-wrap"></div>
+        <p class="card-caption">
+          These underexplored combinations often involve non-standard modalities such as Sensor, Graph,
+          Tabular, or Spatial data. Some show rapid recent growth, indicating emerging research directions.
+        </p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ── Footer (injected by common.js) ────────────────────── -->
+<div id="site-footer"></div>
+
+<!-- ── Scripts ────────────────────────────────────────────── -->
+<script src="assets/js/common.js"></script>
+<script src="assets/js/explore.js"></script>
+
+<!-- ── Stats loader ──────────────────────────────────────── -->
+<script>
+(async function statsLoader() {
+  const container = document.getElementById('datasets-stats');
+  if (!container) return;
+
+  function card(label, value, sub) {
+    return `<div class="stat-card" role="listitem">
+      <div class="stat-label">${label}</div>
+      <div class="stat-value">${value}</div>
+      <div class="stat-sub">${sub}</div>
+    </div>`;
+  }
+
+  const MODS_LIST = 'Vision, Language, Audio, Sensor, Graph, Tabular, Spatial, Time series';
+
+  try {
+    const manifest = await fetchJSON('./data/datasets.json');
+    const datasets = await Promise.all(manifest.datasets.map(async d => {
+      const meta = await fetchJSON(d.meta);
+      let summary = {};
+      try {
+        const sf = meta.primary_files?.stats_source || 'summary.json';
+        summary = await fetchJSON(`./data/${meta.id}/${sf}`);
+      } catch {}
+      return { id: d.id, meta, summary };
+    }));
+
+    let html = '';
+
+    if (datasets.length > 1) {
+      const totalLatest = datasets.reduce((s, d) => s + (d.summary.total_latest_year || 0), 0);
+      const maxMod      = Math.max(...datasets.map(d => d.summary.modalities_count || 0));
+      const totalFigs   = datasets.reduce((s, d) => s + (d.summary.figures_count || 0), 0);
+      html += `
+        <p class="stats-section-title">All datasets</p>
+        <div class="stats-strip" role="list">
+          ${card('Datasets available', datasets.length, 'Explore each independently')}
+          ${card('Total preprints (latest year)', totalLatest.toLocaleString(), 'Combined across all datasets')}
+          ${card('Max modalities tracked', maxMod, 'Across all datasets')}
+          ${card('Total interactive figures', totalFigs, 'Across all datasets')}
+        </div>`;
+    }
+
+    for (const ds of datasets) {
+      const s    = ds.summary;
+      const from = s.start_year ?? ds.meta.coverage?.from ?? '—';
+      const to   = s.end_year   ?? ds.meta.coverage?.to   ?? '—';
+      const grow = s.growth_multiplier ? `${s.growth_multiplier}×` : '—';
+      html += `
+        ${datasets.length > 1
+          ? `<p class="stats-section-title">${ds.meta.title || ds.id}</p>`
+          : ''}
+        <div class="stats-strip" role="list">
+          ${card(`Multimodal AI preprints in ${to}`,
+                 (s.total_latest_year || 0).toLocaleString(),
+                 `Up from ${(s.total_start_year || 0).toLocaleString()} in ${from}`)}
+          ${card(`Total growth (${from} → ${to})`, grow, 'Near-continuous year-on-year increase')}
+          ${card('Modalities tracked', s.modalities_count || '—', MODS_LIST)}
+          ${card('Interactive figures', s.figures_count || '—', 'Filterable, downloadable charts')}
+        </div>`;
+    }
+
+    container.innerHTML = html;
+  } catch (e) {
+    container.innerHTML = `
+      <div class="stats-strip" role="list">
+        ${card('Multimodal AI preprints in 2025', '3,361', 'Up from 164 in 2019')}
+        ${card('Total growth (2019 → 2025)', '20×', 'Near-continuous year-on-year increase')}
+        ${card('Modalities tracked', '8', MODS_LIST)}
+        ${card('Interactive figures', '6', 'Filterable, downloadable charts')}
+      </div>`;
+  }
+})();
+</script>
 </body>
 </html>

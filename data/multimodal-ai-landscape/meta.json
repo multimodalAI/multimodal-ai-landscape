@@ -1,0 +1,24 @@
+{
+  "id": "multimodal-ai-landscape",
+  "title": "Multimodal AI Landscape",
+  "description": "Systematic analysis of arXiv preprints tracking the growth of multimodal AI research from 2019 to 2025, spanning eight modalities: Vision, Language, Audio, Time series, Sensor, Graph, Tabular, and Spatial.",
+  "coverage": { "from": 2019, "to": 2025 },
+  "last_updated": "2026-01",
+  "paper_url": "https://www.nature.com/articles/s42256-025-01116-5",
+  "arxiv_url": "https://arxiv.org/abs/2504.03603",
+  "doi": "10.1038/s42256-025-01116-5",
+  "github_url": "https://github.com/multimodalAI/multimodal-ai-landscape",
+  "license": "MIT",
+  "primary_files": {
+    "stats_source": "summary.json",
+    "figures": {
+      "fig1":     "overall-preprint-counts.csv",
+      "fig2":     "preprint-counts-by-modality.csv",
+      "fig3":     "preprint-counts-by-combined-modality-number.csv",
+      "fig4":     "modality-combination-breakdown.csv",
+      "fig5_2024":"modality-pairs-2024.csv",
+      "fig5_2025":"modality-pairs-2025.csv",
+      "fig6":     "other-modality-combinations-by-year.csv"
+    }
+  }
+}

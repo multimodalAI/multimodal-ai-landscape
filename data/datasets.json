@@ -1,0 +1,8 @@
+{
+  "datasets": [
+    {
+      "id": "multimodal-ai-landscape",
+      "meta": "./data/multimodal-ai-landscape/meta.json"
+    }
+  ]
+}
