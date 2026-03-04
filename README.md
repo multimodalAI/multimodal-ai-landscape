@@ -109,7 +109,7 @@ The search terms and queries used are detailed in the query table below.
 
 ## Data files
 
-All data files live under `data/multimodal-ai-landscape/`.
+All dataset CSV/JSON files live under `data/multimodal-ai-landscape/` (plus `data/datasets.json` as the top-level manifest).
 Each dataset folder contains a `meta.json` descriptor that maps figure keys to CSV filenames,
 allowing the site to resolve paths without hardcoding them in JavaScript.
 
@@ -130,7 +130,7 @@ allowing the site to resolve paths without hardcoding them in JavaScript.
 Contributions are welcome. Please open an issue before submitting a pull request for significant changes.
 
 To add a new dataset:
-1. Create `data/<dataset-id>/` containing `meta.json`, `summary.json`, and your CSV files.
+1. Create `data/<dataset-id>/` containing `meta.json`, `summary.json`, and your CSV files. Ensure `<dataset-id>` exactly matches the `id` field in `meta.json`, which is used for path resolution.
 2. Run `node scripts/generate_datasets_manifest.mjs` to regenerate `data/datasets.json`.
 3. Open a pull request with the new dataset folder and the updated manifest.
 
