@@ -85,7 +85,8 @@ function injectDatasetSelector(allDatasets, activeId) {
             || document.querySelector('.dashboard-hero .hero-content');
   if (!hero) return;
   const isOnePage = document.body.classList.contains('one-page');
-  const linkPage  = isOnePage ? 'index.html' : 'explore.html';
+  const linkPage  = isOnePage ? 'index.html'
+                              : (location.pathname.split('/').pop() || 'index.html');
   const wrap = document.createElement('div');
   wrap.className = 'dataset-selector';
   wrap.setAttribute('role', 'group');
@@ -551,15 +552,17 @@ async function renderChart6() {
 
     function draw() {
       const cols   = comboCols.filter(c => selected.has(c));
+      const cleanLabel = col => displayModalityLabel(col);
       const traces = cols.map((col, i) => ({
         x: years,
         y: data.map(r => num(r[col])),
-        name: `${displayModalityLabel(col)} (${fmt(totals[col])})`,
+        name: `${cleanLabel(col)} (${fmt(totals[col])})`,
+        customdata: years.map(() => cleanLabel(col)),
         type: 'scatter', mode: 'lines+markers',
         line:   { width: 2.5, color: colorFor[col], dash: styleFor[col] },
         marker: { size: 7,  color: colorFor[col],
           symbol: ['circle','square','diamond','cross','triangle-up','triangle-down'][i % 6] },
-        hovertemplate: '<b>%{x}</b><br>%{fullData.name.split(" (")[0]}: %{y:,}<extra></extra>'
+        hovertemplate: '<b>%{x}</b><br>%{customdata}: %{y:,}<extra></extra>'
       }));
       hideSkeleton('chart6');
       if (!traces.length) {

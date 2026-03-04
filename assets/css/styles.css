@@ -411,7 +411,8 @@ img, svg { display: block; }
   font-style: normal;
   box-shadow: 0 4px 12px rgba(0,0,0,.25);
 }
-.help-tip:hover::after { opacity: 1; }
+.help-tip:hover::after,
+.help-tip:focus-visible::after { opacity: 1; }
 
 /* ── Card controls row ──────────────────────────────────── */
 .card-controls {

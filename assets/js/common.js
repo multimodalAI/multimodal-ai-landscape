@@ -143,8 +143,10 @@ function downloadCSVFile(filename, data) {
   const blob = new Blob([Papa.unparse(data)], { type: 'text/csv;charset=utf-8;' });
   const url  = URL.createObjectURL(blob);
   const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
 }
 function downloadPNG(chartId, filename) {
   Plotly.downloadImage(chartId, { format: 'png', filename, width: 1200, height: 700, scale: 2 });
@@ -397,6 +399,11 @@ async function setLastUpdated() {
       const ham = document.querySelector('.nav-hamburger');
       if (ham) ham.setAttribute('aria-expanded', 'false');
     }
+  });
+
+  // Expose help-tip content to screen readers via aria-label
+  document.querySelectorAll('.help-tip[data-tip]').forEach(el => {
+    if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', el.dataset.tip);
   });
 
   // Resolve last-updated date asynchronously
