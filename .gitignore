@@ -1,0 +1,51 @@
+# ── OS / editor artefacts ──────────────────────────────────
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ── Editor / IDE ───────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.user
+
+# ── Backup / temp files ────────────────────────────────────
+*.bak
+*.swp
+*.swo
+*~
+
+# ── Node (build tooling / scripts only — no framework) ─────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+
+# ── Build / dist outputs ───────────────────────────────────
+dist/
+build/
+out/
+
+# ── Python (utility scripts) ──────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.env
+.venv/
+venv/
+
+# ── Local dev server / test artefacts ─────────────────────
+*.log
+
+# ── Sensitive / local config ──────────────────────────────
+.env.local
+.env.*.local
+secrets.*
