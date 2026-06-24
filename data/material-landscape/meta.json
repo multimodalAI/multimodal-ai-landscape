@@ -1,0 +1,21 @@
+{
+  "id": "material-landscape",
+  "title": "Multimodal AI for Material Science",
+  "description": "Systematic analysis of Scopus publications tracking the growth of multimodal and generative AI in materials research from 2020 to 2025, covering four data categories: composition, microstructure, processing, and testing & characterisation.",
+  "coverage": { "from": 2020, "to": 2025 },
+  "last_updated": "2026-03",
+  "paper_url": "",
+  "doi": "",
+  "source": "Elsevier Scopus",
+  "page": "material.html",
+  "license": "MIT",
+  "primary_files": {
+    "stats_source": "summary.json",
+    "figures": {
+      "fig1a": "fig1a-proportions.csv",
+      "fig1b": "fig1b-property-design.csv",
+      "fig3a": "fig3a-category-counts.csv",
+      "fig3b": "fig3b-category-proportions.csv"
+    }
+  }
+}
