@@ -96,8 +96,9 @@ function injectDatasetSelector(allDatasets, activeId) {
     allDatasets.map(d => {
       const title  = d.meta?.title || d.id;
       const active = d.id === activeId;
+      const href   = d.meta?.page ?? `${linkPage}?dataset=${encodeURIComponent(d.id)}`;
       return `<a class="chip${active ? ' active' : ''}"
-                 href="${linkPage}?dataset=${encodeURIComponent(d.id)}"
+                 href="${href}"
                  aria-current="${active ? 'page' : 'false'}">${title}</a>`;
     }).join('');
   hero.appendChild(wrap);

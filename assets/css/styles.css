@@ -1021,6 +1021,18 @@ img, svg { display: block; }
   background: var(--accent-light);
   text-decoration: none;
 }
+/* ── Cross-section navigation pill ─────────────────────── */
+.topbar-section-link {
+  color: var(--accent);
+  background: var(--accent-light);
+  border: 1px solid rgba(26,86,219,.18);
+  font-weight: 600;
+  margin-right: 4px;
+}
+.topbar-section-link:hover {
+  background: rgba(26,86,219,.14);
+  border-color: var(--accent);
+}
 .topbar-github {
   display: inline-flex;
   align-items: center;

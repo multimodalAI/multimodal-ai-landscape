@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Multimodal AI for Materials Science · Explorer</title>
+<meta name="description" content="Interactive data visualisations exploring multimodal and generative AI trends in materials science from 2020 to 2025, based on Scopus publication data."/>
+
+<meta property="og:title"       content="Multimodal AI for Materials Science Explorer"/>
+<meta property="og:description" content="Interactive exploration of multimodal and generative AI trends in materials science, 2020–2025."/>
+<meta property="og:type"        content="website"/>
+<meta property="og:image"       content="https://multimodalai.github.io/multimodal-ai-landscape/og-image.png"/>
+<meta name="twitter:card"       content="summary_large_image"/>
+<meta name="twitter:title"      content="Multimodal AI for Materials Science Explorer"/>
+<meta name="twitter:description" content="Interactive exploration of multimodal and generative AI trends in materials science."/>
+<meta name="twitter:image"      content="https://multimodalai.github.io/multimodal-ai-landscape/og-image.png"/>
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/multimodalai-logo.png">
+<link rel="apple-touch-icon" href="assets/img/multimodalai-logo.png">
+<link rel="stylesheet" href="assets/css/styles.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+
+<body class="one-page">
+
+<!-- ── Top bar ────────────────────────────────────────────── -->
+<header class="site-topbar" role="banner">
+  <div class="container-wide topbar-inner">
+    <a href="material.html" class="nav-logo" aria-label="Multimodal AI for Materials Science — home">
+      <img src="./assets/img/multimodalai-logo.png" alt="" class="nav-logo-img"
+           width="28" height="28" aria-hidden="true" onerror="this.style.display='none'">
+      Multimodal AI · Materials Science
+    </a>
+    <div class="topbar-links">
+      <a href="index.html" class="topbar-link topbar-section-link">
+        ← General AI Landscape
+      </a>
+      <!-- PAPER LINK — uncomment when published
+      <a href="#" target="_blank" rel="noopener" class="topbar-link">Paper&nbsp;↗</a>
+      -->
+      <a href="https://github.com/multimodalAI/multimodal-ai-landscape"
+         class="topbar-github" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839
+            9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343
+            -3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608
+            1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647
+            .35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988
+            1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564
+            9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027
+            2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0
+            3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012
+            2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22
+            6.484 17.522 2 12 2z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Hero ──────────────────────────────────────────────── -->
+<section class="dashboard-hero" aria-labelledby="mat-hero-title">
+  <div class="container-wide">
+    <div class="hero-content" style="max-width:100%">
+      <div class="hero-text">
+        <!-- JOURNAL EYEBROW — uncomment when published
+        <div class="page-hero-eyebrow">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+            <circle cx="5" cy="5" r="5"/>
+          </svg>
+          J. Phys. Mater. · 2026
+        </div>
+        -->
+        <h1 id="mat-hero-title">Multimodal AI for Materials Science Explorer</h1>
+        <!-- PAPER REFERENCE — uncomment when published
+        <p class="hero-body">
+          This page presents interactive data visualisations based on the paper
+          <em>Generative and multimodal AI for materials prediction and design: Progress, challenges, and perspectives</em>
+          by Liu, Anjah, Jolly et al. (IOP Publishing, <em>Journal of Physics: Materials</em>).
+        </p>
+        -->
+        <p class="hero-body">
+          The analysis covers publications from 2020 to 2025 and highlights the rapid growth of multimodal
+          and generative AI in materials science research. Publication data were retrieved from the
+          <strong>Elsevier Scopus database</strong>.
+        </p>
+        <p class="hero-body hero-body-note">
+          The data is last updated in <strong id="mat-last-updated">June 2026</strong>.
+          The reported numbers should be interpreted as indicators of overall trends rather than exact totals.
+        </p>
+      </div>
+      <div class="hero-meta-strip">
+        <span class="meta-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Coverage: 2020 – 2025
+        </span>
+        <span class="meta-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Source: Elsevier Scopus
+        </span>
+        <a href="index.html" class="meta-badge meta-badge-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          General AI Landscape
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats band ────────────────────────────────────────── -->
+<section class="stats-band" aria-label="Dataset statistics">
+  <div class="container-wide">
+    <div id="mat-datasets-stats">
+      <div class="stats-strip">
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:38%;border-radius:4px"></div>
+        </div>
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:28%;border-radius:4px"></div>
+        </div>
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:20%;border-radius:4px"></div>
+        </div>
+        <div class="stat-card" aria-hidden="true">
+          <div class="skeleton" style="height:11px;width:65%;margin-bottom:10px;border-radius:4px"></div>
+          <div class="skeleton" style="height:30px;width:20%;border-radius:4px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Sticky figure navigation ──────────────────────────── -->
+<nav class="sub-nav" id="mat-figure-nav" aria-label="Figure navigation">
+  <div class="container-wide sub-nav-inner">
+    <button class="sub-nav-toggle" id="mat-fig-menu-toggle"
+            aria-expanded="false" aria-controls="mat-fig-menu-panel">
+      <svg class="sub-nav-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <span class="sub-nav-toggle-text">Jump to figure</span>
+      <svg class="sub-nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <div class="sub-nav-panel" id="mat-fig-menu-panel">
+      <a class="sub-nav-link" href="#mat-fig1">Fig.&nbsp;1 · Growth trends</a>
+      <a class="sub-nav-link" href="#mat-fig3">Fig.&nbsp;3 · Data categories</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Disclaimer ────────────────────────────────────────── -->
+<div class="container-wide" style="padding-top:24px">
+  <div class="disclaimer" role="note">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" aria-hidden="true">
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <span>Publication counts are derived from keyword-based searches of the Elsevier Scopus database and should be
+    interpreted as <strong>indicators of overall trends</strong> rather than exact totals.</span>
+  </div>
+</div>
+
+<!-- ── Dashboard ─────────────────────────────────────────── -->
+<main class="page-main" id="main-content" style="padding-top:8px">
+  <div class="container-wide">
+
+    <!-- ── Fig 1 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="mat-fig1" aria-labelledby="mat-label-fig1">
+      <p class="stats-section-title" id="mat-label-fig1">
+        Figure 1 · Growth trends of multimodal and generative AI in materials research (2020–2025)
+      </p>
+      <div class="grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              Fig. 1a · Proportion of multimodal AI, generative AI, and their intersection
+              <span class="help-tip" role="tooltip" tabindex="0"
+                data-tip="Proportion of multimodal AI, generative AI, and multimodal generative AI publications relative to all AI for materials publications, 2020–2025.">?</span>
+            </span>
+            <div class="card-actions">
+              <button class="card-action-btn" id="dl-png-mat1a" aria-label="Download as PNG">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>PNG
+              </button>
+              <button class="card-action-btn" id="dl-csv-mat1a" aria-label="Download data as CSV">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                </svg>CSV
+              </button>
+            </div>
+          </div>
+          <div id="mat-chart1a" class="chart-wrap"></div>
+          <p class="card-caption">
+            Proportion of multimodal AI, generative AI, and their intersection in materials AI
+            publications from 2020 to 2025. Data retrieved from the Elsevier Scopus database.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              Fig. 1b · Multimodal AI studies in property prediction and materials design
+              <span class="help-tip" role="tooltip" tabindex="0"
+                data-tip="Annual counts of multimodal AI publications focused on property prediction versus materials design, 2020–2025.">?</span>
+            </span>
+            <div class="card-actions">
+              <button class="card-action-btn" id="dl-png-mat1b" aria-label="Download as PNG">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>PNG
+              </button>
+              <button class="card-action-btn" id="dl-csv-mat1b" aria-label="Download data as CSV">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                </svg>CSV
+              </button>
+            </div>
+          </div>
+          <div id="mat-chart1b" class="chart-wrap"></div>
+          <p class="card-caption">
+            Increasing numbers of multimodal AI studies in property prediction and materials design,
+            2020–2025. Data retrieved from the Elsevier Scopus database.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Fig 3 ──────────────────────────────────────────── -->
+    <section class="explore-section" id="mat-fig3" aria-labelledby="mat-label-fig3">
+      <p class="stats-section-title" id="mat-label-fig3">
+        Figure 3 · Growth and shifting data categories in multimodal materials AI
+      </p>
+      <div class="grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              Fig. 3a · Rapid increase in multimodal AI publications
+              <span class="help-tip" role="tooltip" tabindex="0"
+                data-tip="Annual count of multimodal AI publications in materials research, broken down by four data categories.">?</span>
+            </span>
+            <div class="card-actions">
+              <button class="card-action-btn" id="dl-png-mat3a" aria-label="Download as PNG">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>PNG
+              </button>
+              <button class="card-action-btn" id="dl-csv-mat3a" aria-label="Download data as CSV">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                </svg>CSV
+              </button>
+            </div>
+          </div>
+          <div id="mat-chart3a" class="chart-wrap"></div>
+          <p class="card-caption">
+            A rapid increase in multimodal AI publications, highlighting four data categories:
+            composition, microstructure, processing, and testing &amp; characterisation.
+            Data retrieved from the Elsevier Scopus database.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              Fig. 3b · Contributions of data categories in multimodal studies
+              <span class="help-tip" role="tooltip" tabindex="0"
+                data-tip="Proportional contributions of the four data categories in multimodal AI materials studies, 2020–2025.">?</span>
+            </span>
+            <div class="card-actions">
+              <button class="card-action-btn" id="dl-png-mat3b" aria-label="Download as PNG">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>PNG
+              </button>
+              <button class="card-action-btn" id="dl-csv-mat3b" aria-label="Download data as CSV">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                </svg>CSV
+              </button>
+            </div>
+          </div>
+          <div id="mat-chart3b" class="chart-wrap"></div>
+          <p class="card-caption">
+            Contributions of composition, microstructure, processing, and testing &amp; characterisation
+            data in multimodal studies. Data retrieved from the Elsevier Scopus database.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ── Footer ────────────────────────────────────────────── -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container-wide">
+    <div style="display:flex;align-items:flex-start;gap:32px;padding:40px 0 32px;flex-wrap:wrap">
+      <div>
+        <a href="material.html" class="nav-logo" style="text-decoration:none;margin-bottom:12px;display:inline-flex">
+          <img src="./assets/img/multimodalai-logo.png" alt="" class="nav-logo-img"
+               width="28" height="28" aria-hidden="true" onerror="this.style.display='none'">
+          Multimodal AI · Materials Science
+        </a>
+        <p style="font-size:13.5px;color:var(--text-muted);line-height:1.75;max-width:380px;margin-top:10px">
+          Interactive data visualisations covering multimodal and generative AI trends
+          in materials science research. Coverage: Scopus 2020–2025.
+          Last updated <span id="mat-footer-last-updated">June 2026</span>.
+        </p>
+        <!-- BIBTEX BLOCK — uncomment when paper is published
+        <p style="font-size:13.5px;color:var(--text-muted);margin-top:8px">
+          Citation available after publication.
+        </p>
+        -->
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-bottom-text">
+        &copy; <span id="mat-copyright-year">2026</span> University of Sheffield &mdash;
+        <a href="LICENSE" target="_blank" rel="noopener">MIT Licence</a> &mdash;
+        Built with
+        <a href="https://plotly.com/javascript/" target="_blank" rel="noopener">Plotly.js</a>
+        and
+        <a href="https://www.papaparse.com/" target="_blank" rel="noopener">Papa Parse</a>.
+      </span>
+      <div class="footer-bottom-links">
+        <a href="index.html">General AI Landscape</a>
+        <a href="LICENSE" target="_blank" rel="noopener">Licence</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Scripts ────────────────────────────────────────────── -->
+<script src="assets/js/common.js?v=2"></script>
+<script src="assets/js/material-explore.js?v=2"></script>
+
+<!-- ── Sub-nav wiring (separate IDs from index.html) ─────── -->
+<script>
+(function () {
+  const toggle  = document.getElementById('mat-fig-menu-toggle');
+  const panel   = document.getElementById('mat-fig-menu-panel');
+  const nav     = document.getElementById('mat-figure-nav');
+  if (toggle && panel && nav) {
+    const closeNav = () => { nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); };
+    const openNav  = () => { nav.classList.add('open');    toggle.setAttribute('aria-expanded','true');  };
+    toggle.addEventListener('click', e => { e.stopPropagation(); nav.classList.contains('open') ? closeNav() : openNav(); });
+    panel.addEventListener('click',  e => { if (e.target.closest('a')) closeNav(); });
+    document.addEventListener('click',   e => { if (!nav.contains(e.target)) closeNav(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+  }
+  const sections = Array.from(document.querySelectorAll('.explore-section[id]'));
+  const links    = Array.from(document.querySelectorAll('#mat-fig-menu-panel .sub-nav-link'));
+  if (sections.length && links.length) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        const l = links.find(l => l.getAttribute('href') === '#' + e.target.id);
+        if (l) l.classList.toggle('active', e.isIntersecting);
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    sections.forEach(s => observer.observe(s));
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -3,6 +3,10 @@
     {
       "id": "multimodal-ai-landscape",
       "meta": "./data/multimodal-ai-landscape/meta.json"
+    },
+    {
+      "id": "material-landscape",
+      "meta": "./data/material-landscape/meta.json"
     }
   ]
 }
