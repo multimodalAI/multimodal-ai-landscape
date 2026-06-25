@@ -53,7 +53,8 @@ The interactive site is a multi-page static web application built with [Plotly.j
 
 ```
 multimodal-ai-landscape/
-├── index.html                        # Home page (hero, stats cards, preview chart)
+├── index.html                        # Main multimodal AI dashboard (2019–2025)
+├── material.html                     # Materials-focused dashboard (2020–2025)
 ├── assets/
 │   ├── css/styles.css                # Shared stylesheet (design tokens, layout, components)
 │   ├── js/
@@ -61,20 +62,28 @@ multimodal-ai-landscape/
 │   │   │                             #   color palette, chip factory, download helpers,
 │   │   │                             #   dynamic last-updated resolver
 │   │   └── explore.js                # All six chart renderers + dataset-selector logic
+│   │   └── material-explore.js       # Materials page renderers (Fig. 1a/1b/3a/3b)
 │   ├── img/multimodalai-logo.png     # Site logo (nav, footer, favicon)
 │   └── meta/build.json               # CI-generated build timestamp (last-updated fallback)
 ├── data/
 │   ├── datasets.json                 # Manifest listing all available datasets
-│   └── multimodal-ai-landscape/      # Dataset folder
-│       ├── meta.json                 # Dataset descriptor (title, coverage, figure → CSV map)
-│       ├── summary.json              # Precomputed stats for home-page cards
-│       ├── overall-preprint-counts.csv
-│       ├── preprint-counts-by-modality.csv
-│       ├── preprint-counts-by-combined-modality-number.csv
-│       ├── modality-combination-breakdown.csv
-│       ├── modality-pairs-2024.csv
-│       ├── modality-pairs-2025.csv
-│       └── other-modality-combinations-by-year.csv
+│   ├── multimodal-ai-landscape/      # General multimodal AI dataset
+│   │   ├── meta.json                 # Dataset descriptor (title, coverage, figure → CSV map)
+│   │   ├── summary.json              # Precomputed stats for home-page cards
+│   │   ├── overall-preprint-counts.csv
+│   │   ├── preprint-counts-by-modality.csv
+│   │   ├── preprint-counts-by-combined-modality-number.csv
+│   │   ├── modality-combination-breakdown.csv
+│   │   ├── modality-pairs-2024.csv
+│   │   ├── modality-pairs-2025.csv
+│   │   └── other-modality-combinations-by-year.csv
+│   └── material-landscape/           # Materials science dataset
+│       ├── meta.json
+│       ├── summary.json
+│       ├── fig1a-proportions.csv
+│       ├── fig1b-property-design.csv
+│       ├── fig3a-category-counts.csv
+│       └── fig3b-category-proportions.csv
 └── scripts/
     └── generate_datasets_manifest.mjs  # Node.js script: scans data/ and writes datasets.json
 ```
@@ -109,9 +118,11 @@ The search terms and queries used are detailed in the query table below.
 
 ## Data files
 
-All dataset CSV/JSON files live under `data/multimodal-ai-landscape/` (plus `data/datasets.json` as the top-level manifest).
+All dataset CSV/JSON files live under the dataset-specific folders in `data/` (plus `data/datasets.json` as the top-level manifest).
 Each dataset folder contains a `meta.json` descriptor that maps figure keys to CSV filenames,
 allowing the site to resolve paths without hardcoding them in JavaScript.
+
+### Multimodal AI dataset (`data/multimodal-ai-landscape/`)
 
 | File | Description |
 |------|-------------|
@@ -122,6 +133,17 @@ allowing the site to resolve paths without hardcoding them in JavaScript.
 | [`modality-pairs-2024.csv`](data/multimodal-ai-landscape/modality-pairs-2024.csv) | Ranked frequency of modality pairs — 2024 |
 | [`modality-pairs-2025.csv`](data/multimodal-ai-landscape/modality-pairs-2025.csv) | Ranked frequency of modality pairs — 2025 |
 | [`other-modality-combinations-by-year.csv`](data/multimodal-ai-landscape/other-modality-combinations-by-year.csv) | Trend lines for less common modality combinations |
+
+### Materials dataset (`data/material-landscape/`)
+
+| File | Description |
+|------|-------------|
+| [`fig1a-proportions.csv`](data/material-landscape/fig1a-proportions.csv) | Yearly proportions of multimodal AI, generative AI, and multimodal-generative AI within materials AI publications |
+| [`fig1b-property-design.csv`](data/material-landscape/fig1b-property-design.csv) | Yearly counts of property prediction vs materials design publications |
+| [`fig3a-category-counts.csv`](data/material-landscape/fig3a-category-counts.csv) | Yearly absolute counts across composition, microstructure, processing, and testing/characterisation |
+| [`fig3b-category-proportions.csv`](data/material-landscape/fig3b-category-proportions.csv) | Yearly proportional split across the four materials data categories |
+| [`summary.json`](data/material-landscape/summary.json) | Precomputed stats used by cards and high-level summaries |
+| [`meta.json`](data/material-landscape/meta.json) | Dataset descriptor including title, coverage, page route, and figure-to-file mapping |
 
 ---
 
